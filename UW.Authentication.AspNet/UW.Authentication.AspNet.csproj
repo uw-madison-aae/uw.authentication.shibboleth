@@ -39,6 +39,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,10 +48,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClaimsAuthenticationHttpModule.cs" />
+    <Compile Include="LocalDevClaimsAuthenticationHttpModule.cs" />
+    <Compile Include="NamedValueCollectionExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShibbolethIIS7ClaimsAuthenticationHttpModule.cs" />
+    <Compile Include="ShibbolethISAPIClaimsAuthenticationHttpModule.cs" />
+    <Compile Include="ShibbolethClaimsAuthenticationHttpModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="UW.Authentication.AspNet.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UW.Shibboleth\UW.Shibboleth.csproj">
+      <Project>{5520c55d-0293-40ff-8991-4e1122050819}</Project>
+      <Name>UW.Shibboleth</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!--FROM MULTIPLE FRAMEWORKS FOR NUGET http://brian-federici.com/blog/2013/4/17/automatically-target-multiple-frameworks-in-your-nuget-package -->

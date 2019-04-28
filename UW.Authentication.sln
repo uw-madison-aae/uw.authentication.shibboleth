@@ -3,9 +3,44 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.202
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Authentication", "Authentication", "{0509D4D9-B677-4A91-AF2D-E379B8C451B0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{9321B3E8-B319-4585-9551-858159A7B49E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UW.Authentication.AspNet", "UW.Authentication.AspNet\UW.Authentication.AspNet.csproj", "{ECC2CECC-62BE-4363-A253-EFDEEE9C8AF6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UW.Authentication.AspNetCore", "UW.Authentication.AspNetCore\UW.Authentication.AspNetCore.csproj", "{6B7CF460-37FB-4705-8EDD-12F795AA1F77}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shibboleth", "Shibboleth", "{478CF894-055A-4E61-A90C-219DEF432A6B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UW.Shibboleth", "UW.Shibboleth\UW.Shibboleth.csproj", "{5520C55D-0293-40FF-8991-4E1122050819}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ECC2CECC-62BE-4363-A253-EFDEEE9C8AF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECC2CECC-62BE-4363-A253-EFDEEE9C8AF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECC2CECC-62BE-4363-A253-EFDEEE9C8AF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECC2CECC-62BE-4363-A253-EFDEEE9C8AF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B7CF460-37FB-4705-8EDD-12F795AA1F77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B7CF460-37FB-4705-8EDD-12F795AA1F77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B7CF460-37FB-4705-8EDD-12F795AA1F77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B7CF460-37FB-4705-8EDD-12F795AA1F77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5520C55D-0293-40FF-8991-4E1122050819}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5520C55D-0293-40FF-8991-4E1122050819}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5520C55D-0293-40FF-8991-4E1122050819}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5520C55D-0293-40FF-8991-4E1122050819}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{ECC2CECC-62BE-4363-A253-EFDEEE9C8AF6} = {0509D4D9-B677-4A91-AF2D-E379B8C451B0}
+		{6B7CF460-37FB-4705-8EDD-12F795AA1F77} = {0509D4D9-B677-4A91-AF2D-E379B8C451B0}
+		{5520C55D-0293-40FF-8991-4E1122050819} = {478CF894-055A-4E61-A90C-219DEF432A6B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {39F11490-5E42-4EA7-83B2-D731F3A1EE27}

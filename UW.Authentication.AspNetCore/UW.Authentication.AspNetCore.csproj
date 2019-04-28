@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Eric Dieckman</Authors>
+    <Company>AAE IT Services Center</Company>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>Library for handling UW's Shibboleth authentication in ASP.Net Core web applications</Description>
+    <RepositoryUrl>https://git.aae.wisc.edu/lib/uw.authentication/</RepositoryUrl>
+    <Version>1.0.0-beta01</Version>
+  </PropertyGroup>
+
+</Project>
