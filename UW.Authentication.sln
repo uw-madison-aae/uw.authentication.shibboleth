@@ -9,11 +9,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{93
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UW.Authentication.AspNet", "UW.Authentication.AspNet\UW.Authentication.AspNet.csproj", "{ECC2CECC-62BE-4363-A253-EFDEEE9C8AF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UW.Authentication.AspNetCore", "UW.Authentication.AspNetCore\UW.Authentication.AspNetCore.csproj", "{6B7CF460-37FB-4705-8EDD-12F795AA1F77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UW.Authentication.AspNetCore", "UW.Authentication.AspNetCore\UW.Authentication.AspNetCore.csproj", "{6B7CF460-37FB-4705-8EDD-12F795AA1F77}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shibboleth", "Shibboleth", "{478CF894-055A-4E61-A90C-219DEF432A6B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UW.Shibboleth", "UW.Shibboleth\UW.Shibboleth.csproj", "{5520C55D-0293-40FF-8991-4E1122050819}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UW.Shibboleth", "UW.Shibboleth\UW.Shibboleth.csproj", "{5520C55D-0293-40FF-8991-4E1122050819}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UW.Identity", "UW.Identity\UW.Identity.csproj", "{6F3ED9CB-D4E4-4777-B889-37D4D039CF15}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{5520C55D-0293-40FF-8991-4E1122050819}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5520C55D-0293-40FF-8991-4E1122050819}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5520C55D-0293-40FF-8991-4E1122050819}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F3ED9CB-D4E4-4777-B889-37D4D039CF15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F3ED9CB-D4E4-4777-B889-37D4D039CF15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F3ED9CB-D4E4-4777-B889-37D4D039CF15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F3ED9CB-D4E4-4777-B889-37D4D039CF15}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -41,6 +47,7 @@ Global
 		{ECC2CECC-62BE-4363-A253-EFDEEE9C8AF6} = {0509D4D9-B677-4A91-AF2D-E379B8C451B0}
 		{6B7CF460-37FB-4705-8EDD-12F795AA1F77} = {0509D4D9-B677-4A91-AF2D-E379B8C451B0}
 		{5520C55D-0293-40FF-8991-4E1122050819} = {478CF894-055A-4E61-A90C-219DEF432A6B}
+		{6F3ED9CB-D4E4-4777-B889-37D4D039CF15} = {9321B3E8-B319-4585-9551-858159A7B49E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {39F11490-5E42-4EA7-83B2-D731F3A1EE27}

@@ -52,14 +52,18 @@
     <Compile Include="LocalDevClaimsAuthenticationHttpModule.cs" />
     <Compile Include="NamedValueCollectionExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ShibbolethIIS7ClaimsAuthenticationHttpModule.cs" />
-    <Compile Include="ShibbolethISAPIClaimsAuthenticationHttpModule.cs" />
+    <Compile Include="ShibbolethVariableAuthenticationHttpModule.cs" />
+    <Compile Include="ShibbolethHeaderAuthenticationHttpModule.cs" />
     <Compile Include="ShibbolethClaimsAuthenticationHttpModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="UW.Authentication.AspNet.snk" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\UW.Identity\UW.Identity.csproj">
+      <Project>{6F3ED9CB-D4E4-4777-B889-37D4D039CF15}</Project>
+      <Name>UW.Identity</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UW.Shibboleth\UW.Shibboleth.csproj">
       <Project>{5520c55d-0293-40ff-8991-4e1122050819}</Project>
       <Name>UW.Shibboleth</Name>

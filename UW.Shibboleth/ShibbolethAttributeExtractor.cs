@@ -17,14 +17,15 @@ namespace UW.Shibboleth
         /// <param name="sessionCollection">A collection of headers/variables received in a Shibboleth session</param>
         /// <param name="attributes">A list of <see cref="IShibbolethAttribute"/> that is being extracted from the sessionCollection</param>
         /// <returns>An <see cref="IDictionary{String,String}"/> for attributes and values</returns>
-        public static IDictionary<string,string> ExtractAttributes(IDictionary<string, string> sessionCollection, IEnumerable<IShibbolethAttribute> attributes)
+        public static ShibbolethAttributeValueCollection ExtractAttributes(IDictionary<string, string> sessionCollection, IEnumerable<IShibbolethAttribute> attributes)
         {
-            var ret_dict = new Dictionary<string, string>();
-            foreach(var attrib in attributes)
+            var ret_dict = new ShibbolethAttributeValueCollection();
+            var distinct_ids = attributes.GroupBy(a => a.Id).Select(a => a.First());
+            foreach(var attrib in distinct_ids)
             {
                 if (sessionCollection.ContainsKey(attrib.Id))
                 {
-                    ret_dict.Add(attrib.Id, sessionCollection[attrib.Id]);
+                    ret_dict.Add(new ShibbolethAttributeValue(attrib.Id, sessionCollection[attrib.Id]));
                 }
             }
 

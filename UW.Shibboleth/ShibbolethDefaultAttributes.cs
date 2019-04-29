@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Linq;
+using System.Xml.Serialization;
+using UW.Shibboleth.Xml;
 
 namespace UW.Shibboleth
 {
@@ -15,43 +11,27 @@ namespace UW.Shibboleth
     /// </summary>
     public static class ShibbolethDefaultAttributes
     {
-        public virtual IList<IShibbolethAttribute> GetAttributeMapping()
+        public static IList<IShibbolethAttribute> GetAttributeMapping()
         {
-            IList<IShibbolethAttribute> attributes = new List<IShibbolethAttribute>();
 
             // get the default XML file
-            var buildDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var filePath = System.IO.Path.Combine(buildDir, "attribute-map.xml");
+            var serializer = new XmlSerializer(typeof(AttributesRoot));
 
-            var xml = XElement.Load(filePath);
+            AttributesRoot attrib_root;
 
-            using(XmlReader reader = XmlReader.Create(filePath))
+            var resourceName = "UW.Shibboleth.attribute-map.xml";
+            //using (FileStream fileStream = new FileStream(filePath, FileMode.Open))
+            using (Stream resourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
             {
-                while (reader.Read())
+                using (StreamReader sr = new StreamReader(resourceStream))
                 {
-                    if (reader.IsStartElement())
-                    {
-                        switch(reader.Name.ToString())
-                        {
-                            case "name":
-                                att
-                        }
-                    }
+                    //sr.ReadToEnd();
+
+                    attrib_root = (AttributesRoot)serializer.Deserialize(sr);
                 }
-            }
 
-            var xml = XDocument.Load(filePath);
-
-            var query = from a in xml.Root.Descendants("Attribute")
-                        select a.Element
-
-            foreach(string name in query)
-            {
-
+                return new List<IShibbolethAttribute>(attrib_root.Attribute);
             }
         }
-
-        
-
     }
 }
