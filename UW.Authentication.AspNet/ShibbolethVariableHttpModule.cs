@@ -7,7 +7,7 @@ namespace UW.Authentication.AspNet
     /// Process a request containing a Shbboleth user and popoulates a ClaimsPrincipal
     /// </summary>
     /// <remarks>Shibboleth is implemented with the useVariables="true"</remarks>
-    public class ShibbolethVariableAuthenticationHttpModule : ShibbolethClaimsAuthenticationHttpModule
+    public class ShibbolethVariableHttpModule : ShibbolethClaimsAuthenticationHttpModule
     {
         protected override bool IsShibbolethSession(HttpRequest request)
         {

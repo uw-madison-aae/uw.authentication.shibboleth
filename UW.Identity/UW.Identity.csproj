@@ -2,6 +2,22 @@
 
   <PropertyGroup>
     <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
+    <Version>1.0.0-beta01</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageLicenseFile>license.txt</PackageLicenseFile>
+    <PackageProjectUrl>https://git.aae.wisc.edu/lib/uw.authentication</PackageProjectUrl>
+    <RepositoryUrl>https://git.aae.wisc.edu/lib/uw.authentication</RepositoryUrl>
+    <Authors>Eric Dieckman</Authors>
+    <Company>AAE IT Services Center</Company>
+    <Product>UW.Identity class library</Product>
+    <Description>Class library used for various UW Identity information.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="license.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>

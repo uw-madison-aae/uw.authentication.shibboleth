@@ -52,8 +52,8 @@
     <Compile Include="LocalDevClaimsAuthenticationHttpModule.cs" />
     <Compile Include="NamedValueCollectionExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ShibbolethVariableAuthenticationHttpModule.cs" />
-    <Compile Include="ShibbolethHeaderAuthenticationHttpModule.cs" />
+    <Compile Include="ShibbolethVariableHttpModule.cs" />
+    <Compile Include="ShibbolethHeaderHttpModule.cs" />
     <Compile Include="ShibbolethClaimsAuthenticationHttpModule.cs" />
   </ItemGroup>
   <ItemGroup>
