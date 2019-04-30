@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Web;
 
 namespace UW.Authentication.AspNet
@@ -24,7 +25,7 @@ namespace UW.Authentication.AspNet
             HttpApplication app = (HttpApplication)sender;
             HttpContext context = app.Context;
 
-            ClaimsPrincipal userPrincipal = GetClaimsPrincipal(context);
+            IPrincipal userPrincipal = GetClaimsPrincipal(context);
 
             // setting the Threading.Thread.CurrentPrincipal is unncessary as it gets set when the context.User is set
             context.User = userPrincipal;
@@ -33,7 +34,7 @@ namespace UW.Authentication.AspNet
         /// <summary>
         /// Returns a <see cref="ClaimsPrincipal"/> to used by the SAM for authentication
         /// </summary>
-        protected abstract ClaimsPrincipal GetClaimsPrincipal(HttpContext context);
+        protected abstract IPrincipal GetClaimsPrincipal(HttpContext context);
 
     }
 }

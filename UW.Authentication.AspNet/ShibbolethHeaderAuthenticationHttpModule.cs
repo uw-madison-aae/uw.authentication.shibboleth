@@ -1,4 +1,5 @@
-﻿using System.Collections.Specialized;
+﻿using System.Web;
+using UW.Shibboleth;
 
 namespace UW.Authentication.AspNet
 {
@@ -8,9 +9,13 @@ namespace UW.Authentication.AspNet
     /// <remarks>Shibboleth is implemented with the useHeaders="true" or is using the isapi_shib.dll</remarks>
     public class ShibbolethHeaderAuthenticationHttpModule : ShibbolethClaimsAuthenticationHttpModule
     {
-        protected override bool IsShibbolethSession(NameValueCollection collection)
+        protected override bool IsShibbolethSession(HttpRequest request)
         {
-            return collection.GetValues("ShibSessionIndex") != null;
+            return request.Headers.GetValues("ShibSessionIndex") != null;
+        }
+        protected override ShibbolethAttributeValueCollection GetAttributesFromRequest(HttpRequest request)
+        {
+            return ShibbolethAttributeExtractor.ExtractAttributes(request.Headers, GetShibbolethAttributes());
         }
     }
 }

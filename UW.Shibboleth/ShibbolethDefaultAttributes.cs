@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Xml.Serialization;
@@ -11,6 +12,9 @@ namespace UW.Shibboleth
     /// </summary>
     public static class ShibbolethDefaultAttributes
     {
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
         public static IList<IShibbolethAttribute> GetAttributeMapping()
         {
 
@@ -19,8 +23,9 @@ namespace UW.Shibboleth
 
             AttributesRoot attrib_root;
 
-            var resourceName = "UW.Shibboleth.attribute-map.xml";
+            var resourceName = "UW.Shibboleth.Xml.attribute-map.xml";
             //using (FileStream fileStream = new FileStream(filePath, FileMode.Open))
+            
             using (Stream resourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
             {
                 using (StreamReader sr = new StreamReader(resourceStream))

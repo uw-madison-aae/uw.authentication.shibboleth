@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Web;
 
 namespace UW.Authentication.AspNet
@@ -9,7 +10,7 @@ namespace UW.Authentication.AspNet
     /// </summary>
     public abstract class LocalDevClaimsAuthenticationHttpModule : ClaimsAuthenticationHttpModule
     {
-        protected override ClaimsPrincipal GetClaimsPrincipal(HttpContext context)
+        protected override IPrincipal GetClaimsPrincipal(HttpContext context)
         {
             return new ClaimsPrincipal(GetClaimsIdentity());
         }
