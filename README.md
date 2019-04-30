@@ -34,6 +34,20 @@ Starting with Shibboleth SP v3, using the iis7_shib.dll with the `useVariables="
     </modules>
 </system.webServer>
 ```	  
+#### Using isapi_shib.dll (or iis7_shib with useHeaders="true")
+This is **NOT** recommended by the authors of Shibboleth.  The server variables method in iis7_shib.dll is more secure.
+
+1. Download and install UW.Authentication.AspNet package.
+2. Add the `ShibbolethHeaderHttpModule` to the web.config file.
+
+```
+<system.webServer>
+    <modules>
+        <add name="AuthenticationModule" type="UW.Authentication.AspNet.ShibbolethHeaderHttpModule, UW.Authentication.AspNet" />
+    </modules>
+</system.webServer>
+```
+
 |   | **IIS (isapi_shib)** | **IIS (iis7_shib)**<br>_useVariables="true"_ | **IIS (iis7_shib)**<br>_useHeaders="true"_ | **Apache** |
 | --- | --- | --- | --- | ---|
 |  ASP.Net Core 2.0+ | ShibbolethHeaderHandler<br>_OutOfProcess or InProcess_  | ShibbolethVariableHandler<br>_InProcess only_  | ShibbolethHeaderHandler<br>_OutOfProcess or InProcess_ | ShibbolethHeaderHandler |
