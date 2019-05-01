@@ -23,7 +23,6 @@ namespace UW.Authentication.AspNetCore
         {
             // look for the presence of the Shib-Session-Index - indicates a Shibboleth session in effect
             return !string.IsNullOrEmpty(Request.HttpContext.GetIISServerVariable("Shib-Session-ID"));
-
         }
 
         public override ShibbolethAttributeValueCollection GetAttributesFromRequest()

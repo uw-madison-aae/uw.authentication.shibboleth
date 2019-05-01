@@ -42,7 +42,7 @@ namespace UW.Authentication.AspNetCore
             try
             {
                 // check if this request has Shibboleth enabled
-                if (IsShibbolethSession())
+                if (!IsShibbolethSession())
                 {
                     // no result, as authentication may be handled by something else later
                     return Task.FromResult(AuthenticateResult.NoResult());
@@ -83,7 +83,7 @@ namespace UW.Authentication.AspNetCore
         public virtual ClaimsPrincipal GetClaimsPrincipal()
         {
             var attributes = GetAttributesFromRequest();
-
+            
             return CreateClaimsPrincipal(attributes);
         }
 
