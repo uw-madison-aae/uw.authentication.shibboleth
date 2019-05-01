@@ -13,6 +13,7 @@
     <RepositoryUrl>https://git.aae.wisc.edu/lib/uw.authentication.git</RepositoryUrl>
     <PackageProjectUrl>https://git.aae.wisc.edu/lib/uw.authentication</PackageProjectUrl>
     <Description>Common objects used in building identities and principals from the University of Wisconsin - Madison Shibboleth implementation.</Description>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>

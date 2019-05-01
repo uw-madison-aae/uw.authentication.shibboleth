@@ -13,9 +13,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{EF7546A2
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UW.Authentication.AspNet.Tests", "Tests\UW.Authentication.AspNet.Tests\UW.Authentication.AspNet.Tests.csproj", "{E3A14D04-AC75-427E-8904-461070F2FFF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UW.Authentication.AspNet.Shibboleth", "UW.Authentication.AspNet.Shibboleth\UW.Authentication.AspNet.Shibboleth.csproj", "{ECC2CECC-62BE-4363-A253-EFDEEE9C8AF6}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UW.Authentication.AspNetCore.Shibboleth", "UW.Authentication.AspNetCore.Shibboleth\UW.Authentication.AspNetCore.Shibboleth.csproj", "{25C62FC6-212F-42BD-8DE7-625FE3A4F1E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UW.Authentication.AspNet.Shibboleth", "UW.Authentication.AspNet.Shibboleth\UW.Authentication.AspNet.Shibboleth.csproj", "{FDAFBD63-F892-4166-878F-B7387897CC3C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,14 +31,14 @@ Global
 		{E3A14D04-AC75-427E-8904-461070F2FFF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3A14D04-AC75-427E-8904-461070F2FFF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3A14D04-AC75-427E-8904-461070F2FFF1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ECC2CECC-62BE-4363-A253-EFDEEE9C8AF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ECC2CECC-62BE-4363-A253-EFDEEE9C8AF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ECC2CECC-62BE-4363-A253-EFDEEE9C8AF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ECC2CECC-62BE-4363-A253-EFDEEE9C8AF6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{25C62FC6-212F-42BD-8DE7-625FE3A4F1E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{25C62FC6-212F-42BD-8DE7-625FE3A4F1E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25C62FC6-212F-42BD-8DE7-625FE3A4F1E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25C62FC6-212F-42BD-8DE7-625FE3A4F1E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDAFBD63-F892-4166-878F-B7387897CC3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDAFBD63-F892-4166-878F-B7387897CC3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDAFBD63-F892-4166-878F-B7387897CC3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDAFBD63-F892-4166-878F-B7387897CC3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,8 +46,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{5520C55D-0293-40FF-8991-4E1122050819} = {478CF894-055A-4E61-A90C-219DEF432A6B}
 		{E3A14D04-AC75-427E-8904-461070F2FFF1} = {EF7546A2-3F19-4BB7-9F53-12ABBBF5CB6C}
-		{ECC2CECC-62BE-4363-A253-EFDEEE9C8AF6} = {0509D4D9-B677-4A91-AF2D-E379B8C451B0}
 		{25C62FC6-212F-42BD-8DE7-625FE3A4F1E4} = {0509D4D9-B677-4A91-AF2D-E379B8C451B0}
+		{FDAFBD63-F892-4166-878F-B7387897CC3C} = {0509D4D9-B677-4A91-AF2D-E379B8C451B0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {39F11490-5E42-4EA7-83B2-D731F3A1EE27}
