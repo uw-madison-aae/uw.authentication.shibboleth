@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Web;
@@ -11,7 +13,7 @@ namespace UW.Authentication.AspNet
     /// </summary>
     public abstract class ShibbolethClaimsAuthenticationHttpModule : ClaimsAuthenticationHttpModule
     {
-        protected override IPrincipal GetClaimsPrincipal(HttpContext context)
+        public override IPrincipal GetClaimsPrincipal(HttpContext context)
         {
             
 
@@ -31,23 +33,45 @@ namespace UW.Authentication.AspNet
         /// <summary>
         /// Retrieves Shibboleth attributes from the Shibboleth session collection
         /// </summary>
-        protected abstract ShibbolethAttributeValueCollection GetAttributesFromRequest(HttpRequest request);
+        public abstract ShibbolethAttributeValueCollection GetAttributesFromRequest(HttpRequest request);
 
         /// <summary>
         /// Whether the session collection indicates this is a Shibboleth session
         /// </summary>
-        protected abstract bool IsShibbolethSession(HttpRequest request);
+        public abstract bool IsShibbolethSession(HttpRequest request);
 
-        protected virtual IList<IShibbolethAttribute> GetShibbolethAttributes()
+        public virtual IList<IShibbolethAttribute> GetShibbolethAttributes()
         {
             return ShibbolethDefaultAttributes.GetAttributeMapping();
 
         }
 
-        protected virtual ClaimsPrincipal CreateClaimsPrincipal(ShibbolethAttributeValueCollection collection)
+        public virtual ClaimsPrincipal CreateClaimsPrincipal(ShibbolethAttributeValueCollection collection)
         {
             var ident = ShibbolethClaimsIdentityCreator.CreateIdentity(collection);
             return new ClaimsPrincipal(ident);
+        }
+
+        /// <summary>
+        /// Extracts Shibboleth attributes from a Shibboleth session collection of headers/variables
+        /// </summary>
+        /// <param name="sessionCollection">A collection of headers/variables received in a Shibboleth session</param>
+        /// <param name="attributes">A list of <see cref="IShibbolethAttribute"/> that is being extracted from the sessionCollection</param>
+        /// <returns>An <see cref="IDictionary{String,String}"/> for attributes and values</returns>
+        public ShibbolethAttributeValueCollection ExtractAttributes(NameValueCollection sessionCollection, IEnumerable<IShibbolethAttribute> attributes)
+        {
+            // quirk with ServerVariables for Shibboleth - cannot grabs the keys.  Keys are NOT added to the key collection.  Must request them manually (by supplied the ShibbolethAttribute.Id
+            var ret_dict = new ShibbolethAttributeValueCollection();
+            var distinct_ids = attributes.GroupBy(a => a.Id).Select(a => a.First());
+            foreach (var attrib in distinct_ids)
+            {
+                if (sessionCollection[attrib.Id] != null)
+                {
+                    ret_dict.Add(new ShibbolethAttributeValue(attrib.Id, sessionCollection[attrib.Id]));
+                }
+            }
+
+            return ret_dict;
         }
     }
 }

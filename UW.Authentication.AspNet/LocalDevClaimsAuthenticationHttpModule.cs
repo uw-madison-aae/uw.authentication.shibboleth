@@ -10,11 +10,11 @@ namespace UW.Authentication.AspNet
     /// </summary>
     public abstract class LocalDevClaimsAuthenticationHttpModule : ClaimsAuthenticationHttpModule
     {
-        protected override IPrincipal GetClaimsPrincipal(HttpContext context)
+        public override IPrincipal GetClaimsPrincipal(HttpContext context)
         {
             return new ClaimsPrincipal(GetClaimsIdentity());
         }
 
-        protected abstract ClaimsIdentity GetClaimsIdentity();
+        public abstract ClaimsIdentity GetClaimsIdentity();
     }
 }

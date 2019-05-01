@@ -34,7 +34,7 @@ namespace UW.Authentication.AspNet
         /// <summary>
         /// Returns a <see cref="ClaimsPrincipal"/> to used by the SAM for authentication
         /// </summary>
-        protected abstract IPrincipal GetClaimsPrincipal(HttpContext context);
+        public abstract IPrincipal GetClaimsPrincipal(HttpContext context);
 
     }
 }

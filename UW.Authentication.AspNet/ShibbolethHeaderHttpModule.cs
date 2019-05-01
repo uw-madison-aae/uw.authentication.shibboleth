@@ -9,13 +9,13 @@ namespace UW.Authentication.AspNet
     /// <remarks>Shibboleth is implemented with the useHeaders="true" or is using the isapi_shib.dll</remarks>
     public class ShibbolethHeaderHttpModule : ShibbolethClaimsAuthenticationHttpModule
     {
-        protected override bool IsShibbolethSession(HttpRequest request)
+        public override bool IsShibbolethSession(HttpRequest request)
         {
             return request.Headers.GetValues("ShibSessionIndex") != null;
         }
-        protected override ShibbolethAttributeValueCollection GetAttributesFromRequest(HttpRequest request)
+        public override ShibbolethAttributeValueCollection GetAttributesFromRequest(HttpRequest request)
         {
-            return ShibbolethAttributeExtractor.ExtractAttributes(request.Headers, GetShibbolethAttributes());
+            return ExtractAttributes(request.Headers, GetShibbolethAttributes());
         }
     }
 }

@@ -10,6 +10,7 @@ namespace UW.Shibboleth
     /// <summary>
     /// Extracts UW Shibboleth attributes from a collection of attributes in a Shibboleth session
     /// </summary>
+    [Obsolete()]
     public static class ShibbolethAttributeExtractor
     {
         /// <summary>
