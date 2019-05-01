@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -78,27 +80,48 @@ namespace UW.Authentication.AspNetCore
 
         }
 
-        protected virtual ClaimsPrincipal GetClaimsPrincipal()
+        public virtual ClaimsPrincipal GetClaimsPrincipal()
         {
             var attributes = GetAttributesFromRequest();
 
             return CreateClaimsPrincipal(attributes);
         }
 
-        protected abstract bool IsShibbolethSession();
+        public abstract bool IsShibbolethSession();
 
-        protected abstract ShibbolethAttributeValueCollection GetAttributesFromRequest();
+        public abstract ShibbolethAttributeValueCollection GetAttributesFromRequest();
 
-        protected virtual IList<IShibbolethAttribute> GetShibbolethAttributes()
+        public virtual IList<IShibbolethAttribute> GetShibbolethAttributes()
         {
             return ShibbolethDefaultAttributes.GetAttributeMapping();
 
         }
 
-        protected virtual ClaimsPrincipal CreateClaimsPrincipal(ShibbolethAttributeValueCollection collection)
+        public virtual ClaimsPrincipal CreateClaimsPrincipal(ShibbolethAttributeValueCollection collection)
         {
             var ident = ShibbolethClaimsIdentityCreator.CreateIdentity(collection);
             return new ClaimsPrincipal(ident);
+        }
+
+        /// <summary>
+        /// Extracts Shibboleth attributes from a Shibboleth session collection of headers/variables
+        /// </summary>
+        /// <param name="sessionCollection">A collection of headers/variables received in a Shibboleth session</param>
+        /// <param name="attributes">A list of <see cref="IShibbolethAttribute"/> that is being extracted from the sessionCollection</param>
+        /// <returns>An <see cref="IDictionary{String,String}"/> for attributes and values</returns>
+        public virtual ShibbolethAttributeValueCollection ExtractAttributes(IDictionary<string, StringValues> sessionCollection, IEnumerable<IShibbolethAttribute> attributes)
+        {
+            var ret_dict = new ShibbolethAttributeValueCollection();
+            var distinct_ids = attributes.GroupBy(a => a.Id).Select(a => a.First());
+            foreach (var attrib in distinct_ids)
+            {
+                if (sessionCollection.ContainsKey(attrib.Id))
+                {
+                    ret_dict.Add(new ShibbolethAttributeValue(attrib.Id, sessionCollection[attrib.Id]));
+                }
+            }
+
+            return ret_dict;
         }
     }
 }

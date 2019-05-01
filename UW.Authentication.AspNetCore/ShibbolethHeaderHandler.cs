@@ -19,7 +19,7 @@ namespace UW.Authentication.AspNetCore
 
         }
 
-        protected override bool IsShibbolethSession()
+        public override bool IsShibbolethSession()
         {
             // look for the presence of the ShibSessionIndex - indicates a Shibboleth session in effect
             if (Request.Headers.TryGetValue("ShibSessionIndex", out StringValues shib_index))
@@ -29,7 +29,7 @@ namespace UW.Authentication.AspNetCore
 
             return false;
         }
-        protected override ShibbolethAttributeValueCollection GetAttributesFromRequest()
+        public override ShibbolethAttributeValueCollection GetAttributesFromRequest()
         {
             //return ShibbolethAttributeExtractor.ExtractAttributes(request.Headers, GetShibbolethAttributes());
             throw new NotImplementedException();

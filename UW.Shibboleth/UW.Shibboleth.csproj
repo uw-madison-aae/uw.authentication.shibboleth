@@ -6,6 +6,8 @@
     <AssemblyOriginatorKeyFile>UW.Shibboleth.snk</AssemblyOriginatorKeyFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>1.0.0-beta01</Version>
+    <Authors>Eric Dieckman</Authors>
+    <Company>AAE IT Services Center</Company>
   </PropertyGroup>
 
   <ItemGroup>
