@@ -8,16 +8,13 @@
     <Description>Library for handling UW's Shibboleth authentication in ASP.Net Core web applications</Description>
     <RepositoryUrl>https://git.aae.wisc.edu/lib/uw.authentication/</RepositoryUrl>
     <Version>1.0.0-beta01</Version>
+    <RootNamespace>UW.Authentication.AspNetCore</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Server.IIS" Version="2.2.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\UW.Identity\UW.Identity.csproj" />
-    <ProjectReference Include="..\UW.Shibboleth\UW.Shibboleth.csproj" />
+    <PackageReference Include="UW.Shibboleth" Version="1.0.0-beta01" />
   </ItemGroup>
 
 </Project>

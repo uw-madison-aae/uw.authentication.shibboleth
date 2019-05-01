@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>UW.Authentication.AspNet</RootNamespace>
-    <AssemblyName>UW.Authentication.AspNet</AssemblyName>
+    <AssemblyName>UW.Authentication.AspNet.Shibboleth</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -46,6 +46,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="UW.Shibboleth, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5f7f45d8d32278ca, processorArchitecture=MSIL">
+      <HintPath>..\packages\UW.Shibboleth.1.0.0-beta01\lib\net45\UW.Shibboleth.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClaimsAuthenticationHttpModule.cs" />
@@ -56,17 +59,8 @@
     <Compile Include="ShibbolethClaimsAuthenticationHttpModule.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="UW.Authentication.AspNet.snk" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\UW.Identity\UW.Identity.csproj">
-      <Project>{6F3ED9CB-D4E4-4777-B889-37D4D039CF15}</Project>
-      <Name>UW.Identity</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\UW.Shibboleth\UW.Shibboleth.csproj">
-      <Project>{5520c55d-0293-40ff-8991-4e1122050819}</Project>
-      <Name>UW.Shibboleth</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!--FROM MULTIPLE FRAMEWORKS FOR NUGET http://brian-federici.com/blog/2013/4/17/automatically-target-multiple-frameworks-in-your-nuget-package -->
