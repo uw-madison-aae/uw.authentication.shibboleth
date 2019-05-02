@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace UW.Identity
+namespace UW.Shibboleth
 {
     /// <summary>
     /// Standardized claim types for use across varying authentication platforms

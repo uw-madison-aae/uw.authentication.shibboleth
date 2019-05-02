@@ -1,4 +1,4 @@
-﻿namespace UW.Identity
+﻿namespace UW.Shibboleth
 {
     public class UWShibbolethClaimsType
     {

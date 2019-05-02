@@ -19,7 +19,7 @@ namespace UW.Shibboleth
 
         }
 
-        public ShibbolethAttributeValueCollection(Dictionary<string, string> collection) : base(collection)
+        public ShibbolethAttributeValueCollection(IDictionary<string, string> collection) : base(collection)
         {
         }
 

@@ -19,6 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\UW.Authentication.AspNet.Shibboleth\UW.Authentication.AspNet.Shibboleth.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="System.Web" />
   </ItemGroup>
 

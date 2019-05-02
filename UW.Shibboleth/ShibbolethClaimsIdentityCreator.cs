@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using UW.Identity;
 
 namespace UW.Shibboleth
 {
@@ -9,9 +8,9 @@ namespace UW.Shibboleth
     /// <remarks>Adds uid, givenName, sn, isMemberOf (groups), mail, eppn, and wiscEduPVI</remarks>
     public static class ShibbolethClaimsIdentityCreator
     {
-        public static ClaimsIdentity CreateIdentity(ShibbolethAttributeValueCollection collection)
+        public static ClaimsIdentity CreateIdentity(ShibbolethAttributeValueCollection collection, string authenticationType)
         {
-            ClaimsIdentity ident = new ClaimsIdentity("Shibboleth");
+            ClaimsIdentity ident = new ClaimsIdentity(authenticationType);
 
             if (collection.ContainsId("uid") && !collection.ValueIsNullOrEmpty("uid")) ident.AddClaim(new Claim(UWShibbolethClaimsType.UID, collection["uid"].Value.ToString().ToLower()));
             if (collection.ContainsId("givenName") && !collection.ValueIsNullOrEmpty("givenName")) ident.AddClaim(new Claim(UWShibbolethClaimsType.FIRSTNAME, collection["givenName"].Value));
@@ -30,6 +29,12 @@ namespace UW.Shibboleth
             }
 
             return ident;
+        }
+
+
+        public static ClaimsIdentity CreateIdentity(ShibbolethAttributeValueCollection collection)
+        {
+            return CreateIdentity(collection, ShibbolethDefaults.AuthenticationScheme);
         }
     }
 }

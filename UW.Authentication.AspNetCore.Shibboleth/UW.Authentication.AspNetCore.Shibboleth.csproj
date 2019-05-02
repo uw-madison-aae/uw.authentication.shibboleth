@@ -7,7 +7,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Library for handling UW's Shibboleth authentication in ASP.Net Core web applications</Description>
     <RepositoryUrl>https://git.aae.wisc.edu/lib/uw.authentication.shibboleth.git</RepositoryUrl>
-    <Version>1.0.0-beta01</Version>
+    <Version>1.1.0</Version>
     <RootNamespace>UW.Authentication.AspNetCore</RootNamespace>
     <PackageProjectUrl>https://git.aae.wisc.edu/lib/uw.authentication.shibboleth</PackageProjectUrl>
     <PackageLicenseFile>license.txt</PackageLicenseFile>
@@ -17,7 +17,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Server.IIS" Version="2.2.2" />
-    <PackageReference Include="UW.Shibboleth" Version="1.0.0-beta01" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,10 +24,10 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-    <None Include="..\license.txt">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\UW.Shibboleth\UW.Shibboleth.csproj" />
   </ItemGroup>
 
 </Project>

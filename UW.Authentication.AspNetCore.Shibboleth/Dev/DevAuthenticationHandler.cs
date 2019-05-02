@@ -23,8 +23,7 @@ namespace UW.Authentication.AspNetCore
         protected override Task<AuthenticateResult> HandleAuthenticateAsync()
         {
 
-            ClaimsIdentity ident = new ClaimsIdentity(DevAuthenticationDefaults.AuthenticationScheme);
-            ident.AddClaims(Options.UserClaims);
+            ClaimsIdentity ident = CreateUserIdentity();
 
             ClaimsPrincipal user = new ClaimsPrincipal(ident);
 
@@ -36,6 +35,14 @@ namespace UW.Authentication.AspNetCore
                         user,
                         new AuthenticationProperties(),
                         this.Scheme.Name)));
+        }
+
+        protected virtual ClaimsIdentity CreateUserIdentity()
+        {
+            ClaimsIdentity ident = new ClaimsIdentity(DevAuthenticationDefaults.AuthenticationScheme);
+            if (Options.UserClaims != null)
+                ident.AddClaims(Options.UserClaims);
+            return ident;
         }
     }
 }
