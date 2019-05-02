@@ -3,7 +3,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Web;
 
-namespace UW.Authentication.AspNet
+namespace UW.AspNet.Authentication
 {
     /// <summary>
     /// Local development claims - must be overridden in each app to manually specify a user/claims

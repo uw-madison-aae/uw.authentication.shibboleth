@@ -1,4 +1,4 @@
-﻿namespace UW.Authentication.AspNet
+﻿namespace UW.AspNetCore.Authentication
 {
     public static class DevAuthenticationDefaults
     {

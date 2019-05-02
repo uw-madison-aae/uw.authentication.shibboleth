@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace UW.Authentication.AspNetCore
+namespace UW.AspNetCore.Authentication
 {
     public class DevAuthenticationOptions : AuthenticationSchemeOptions
     {

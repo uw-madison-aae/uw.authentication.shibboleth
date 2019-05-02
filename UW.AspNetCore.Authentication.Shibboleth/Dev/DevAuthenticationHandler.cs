@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
-namespace UW.Authentication.AspNetCore
+namespace UW.AspNetCore.Authentication
 {
     public class DevAuthenticationHandler : AuthenticationHandler<DevAuthenticationOptions>
     {

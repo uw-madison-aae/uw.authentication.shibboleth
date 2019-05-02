@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text.Encodings.Web;
 using UW.Shibboleth;
 
-namespace UW.Authentication.AspNetCore
+namespace UW.AspNetCore.Authentication
 {
     public class ShibbolethHeaderHandler : ShibbolethHandler
     {

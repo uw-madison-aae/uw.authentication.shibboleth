@@ -117,9 +117,9 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\UW.Authentication.AspNet.Shibboleth\UW.Authentication.AspNet.Shibboleth.csproj">
-      <Project>{fdafbd63-f892-4166-878f-b7387897cc3c}</Project>
-      <Name>UW.Authentication.AspNet.Shibboleth</Name>
+    <ProjectReference Include="..\..\UW.AspNet.Authentication.Shibboleth\UW.AspNet.Authentication.Shibboleth.csproj">
+      <Project>{f34c61b7-086c-47da-838a-8b0ff915c41b}</Project>
+      <Name>UW.AspNet.Authentication.Shibboleth</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\UW.Shibboleth\UW.Shibboleth.csproj">
       <Project>{5520c55d-0293-40ff-8991-4e1122050819}</Project>

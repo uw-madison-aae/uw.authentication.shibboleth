@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Security.Claims;
-using UW.Authentication.AspNetCore;
+using UW.AspNetCore.Authentication;
 using UW.Shibboleth;
 
 namespace SampleMVCCore

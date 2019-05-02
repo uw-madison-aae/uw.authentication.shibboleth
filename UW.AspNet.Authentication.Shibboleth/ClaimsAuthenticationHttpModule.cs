@@ -3,7 +3,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Web;
 
-namespace UW.Authentication.AspNet
+namespace UW.AspNet.Authentication
 {
     /// <summary>
     /// Base class for Claims HTTP modules used for local identity management

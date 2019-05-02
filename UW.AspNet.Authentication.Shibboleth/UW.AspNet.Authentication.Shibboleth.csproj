@@ -5,7 +5,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>UW.Authentication.AspNet.snk</AssemblyOriginatorKeyFile>
-    <RootNamespace>UW.Authentication.AspNet</RootNamespace>
+    <RootNamespace>UW.AspNet.Authentication</RootNamespace>
     <Description>Library used to handle UW's Shibboleth authentication in ASP.NET web applications.</Description>
     <Company>AAE IT Services Center</Company>
     <Authors>Eric Dieckman</Authors>

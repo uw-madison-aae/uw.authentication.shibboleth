@@ -8,7 +8,7 @@
     <Description>Library for handling UW's Shibboleth authentication in ASP.Net Core web applications</Description>
     <RepositoryUrl>https://git.aae.wisc.edu/lib/uw.authentication.shibboleth.git</RepositoryUrl>
     <Version>1.1.0</Version>
-    <RootNamespace>UW.Authentication.AspNetCore</RootNamespace>
+    <RootNamespace>UW.AspNetCore.Authentication</RootNamespace>
     <PackageProjectUrl>https://git.aae.wisc.edu/lib/uw.authentication.shibboleth</PackageProjectUrl>
     <PackageLicenseFile>license.txt</PackageLicenseFile>
     <RepositoryType>git</RepositoryType>

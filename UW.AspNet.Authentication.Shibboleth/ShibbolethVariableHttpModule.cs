@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using UW.Shibboleth;
 
-namespace UW.Authentication.AspNet
+namespace UW.AspNet.Authentication
 {
     /// <summary>
     /// Process a request containing a Shbboleth user and popoulates a ClaimsPrincipal

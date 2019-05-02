@@ -2,7 +2,7 @@
 using System;
 using UW.Shibboleth;
 
-namespace UW.Authentication.AspNetCore
+namespace UW.AspNetCore.Authentication
 {
     public static class ShibbolethExtensions
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
-using UW.Authentication.AspNet;
+using UW.AspNet.Authentication;
 using UW.Shibboleth;
 
 namespace SampleMVCNet47

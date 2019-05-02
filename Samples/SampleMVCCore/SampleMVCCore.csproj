@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\UW.Authentication.AspNetCore.Shibboleth\UW.Authentication.AspNetCore.Shibboleth.csproj" />
+    <ProjectReference Include="..\..\UW.AspNetCore.Authentication.Shibboleth\UW.AspNetCore.Authentication.Shibboleth.csproj" />
   </ItemGroup>
 
 </Project>

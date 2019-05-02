@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using System;
 
-namespace UW.Authentication.AspNetCore
+namespace UW.AspNetCore.Authentication
 {
     public class ShibbolethFailedContext : ResultContext<ShibbolethOptions>
     {

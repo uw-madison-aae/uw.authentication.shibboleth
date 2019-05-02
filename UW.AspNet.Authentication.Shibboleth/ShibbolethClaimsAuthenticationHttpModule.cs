@@ -6,7 +6,7 @@ using System.Security.Principal;
 using System.Web;
 using UW.Shibboleth;
 
-namespace UW.Authentication.AspNet
+namespace UW.AspNet.Authentication
 {
     /// <summary>
     /// Base module for processing a request containing a Shbboleth user and populating a ClaimsPrincipal

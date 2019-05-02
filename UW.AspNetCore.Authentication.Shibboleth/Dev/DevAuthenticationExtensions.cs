@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using UW.Shibboleth;
 
-namespace UW.Authentication.AspNetCore
+namespace UW.AspNetCore.Authentication
 {
     public static class DevAuthenticationExtensions
     {

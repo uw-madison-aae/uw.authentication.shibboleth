@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace UW.Authentication.AspNetCore
+namespace UW.AspNetCore.Authentication
 {
     /// <summary>
     /// Specifies events which the <see cref="ShibbolethHandler"/> invokes to enable developer control over the authentication process.

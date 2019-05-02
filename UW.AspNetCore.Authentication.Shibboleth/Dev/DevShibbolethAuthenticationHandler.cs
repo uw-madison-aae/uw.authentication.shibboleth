@@ -6,7 +6,7 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using UW.Shibboleth;
 
-namespace UW.Authentication.AspNetCore
+namespace UW.AspNetCore.Authentication
 {
     public class DevShibbolethAuthenticationHandler : DevAuthenticationHandler
     {

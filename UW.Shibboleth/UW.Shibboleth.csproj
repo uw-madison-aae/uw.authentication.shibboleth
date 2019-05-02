@@ -5,7 +5,7 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>UW.Shibboleth.snk</AssemblyOriginatorKeyFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>3.0.0</Version>
+    <Version>3.1.0</Version>
     <Authors>Eric Dieckman</Authors>
     <Company>AAE IT Services Center</Company>
     <PackageLicenseUrl></PackageLicenseUrl>
@@ -14,7 +14,7 @@
     <PackageProjectUrl>https://git.aae.wisc.edu/lib/uw.authentication.shibboleth</PackageProjectUrl>
     <Description>Common objects used in building identities and principals from the University of Wisconsin - Madison Shibboleth implementation.</Description>
     <RepositoryType>git</RepositoryType>
-    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <AssemblyVersion>3.1.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
