@@ -57,8 +57,8 @@ This is **NOT** recommended by the authors of Shibboleth.  The server variables 
 
 ### ASP.Net Core 2.0+ Setup
 
-#### Using IIS - iis7_shib.dll (Recommended)
-Starting with Shibboleth SP v3, using the iis7_shib.dll with the `useVariables="true"` in either the `<ISAPI>` or `<Site>` sections is the recommended method for running Shibboleth in IIS7+.  Information about Shibboleth IIS installation [can be found here](https://wiki.shibboleth.net/confluence/display/SP3/IIS).
+#### Using IIS - iis7_shib.dll (Recommended) - only compatible 2.2+
+Starting with Shibboleth SP v3, using the iis7_shib.dll with the `useVariables="true"` in either the `<ISAPI>` or `<Site>` sections is the recommended method for running Shibboleth in IIS7+.  Information about Shibboleth IIS installation [can be found here](https://wiki.shibboleth.net/confluence/display/SP3/IIS).  Variables are only available to .Net Core apps which are run InProcess, which is only available starting in ASP.Net Core 2.2.
 
 1. Download and install the [UW.AspNetCore.Authentication.Shibboleth](https://www.nuget.org/packages/UW.AspNetCore.Authentication.Shibboleth//) package.
 2.  Add the `AddUWShibbolethForIISWithVariables()` to the `IAuthenticationBuilder` in Startup.cs.
@@ -70,6 +70,7 @@ Starting with Shibboleth SP v3, using the iis7_shib.dll with the `useVariables="
                 options.DefaultScheme = ShibbolethDefaults.AuthenticationScheme;
             }).AddUWShibbolethForIISWithVariables();
         }
+3. Setup the hostingModel for InProcess.  [More information here.](https://weblog.west-wind.com/posts/2019/Mar/16/ASPNET-Core-Hosting-on-IIS-with-ASPNET-Core-22)
 
 #### Using IIS - isapi_shib.dll (or iis7_shib with useHeaders="true")
 This is **NOT** recommended by the authors of Shibboleth.  The server variables method in iis7_shib.dll is more secure.
