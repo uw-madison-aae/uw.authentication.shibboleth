@@ -13,6 +13,8 @@ This library is for ASP.Net applications (ASP.Net Core 2.0+, ASP.Net 4.5+) and [
 - IIS7+ (ISAPI or IIS7 Shibboleth DLL)
 - Apache (Front-end proxy for ASP.Net Core 2.0+)
 
+_This documentation does NOT cover Shibboleth setup for IIS/Apache.  Please refer to [UW-Madison documentation](https://kb.wisc.edu/86317) for that information._
+
 ------------
 ## How It Works
 
@@ -110,6 +112,16 @@ This is **NOT** recommended by the authors of Shibboleth.  The server variables 
             }).AddUWShibbolethForLinux();
         }
 
+3. Headers must be forwarded from the Apache Reverse Proxy into the .Net Core app running on Kestrel.  This is done using the `RequestHeader` declaration.  You must manually define every header from Shibboleth that you wish to use in the .Net Core app.   **ShibSessionIndex** is **required** at a minimum, as that is what the library uses to determine if a Shibboleth session is in place.
+
+		RequestHeader set isMemberOf %{isMemberOf}e
+		RequestHeader set eppn %{eppn}e
+		RequestHeader set sn %{sn}e
+		RequestHeader set givenName %{givenName}e
+		RequestHeader set mail %{mail}e
+		RequestHeader set uid %{uid}e
+		RequestHeader set wiscEduPVI %{wiscEduPVI}e
+		RequestHeader set ShibSessionIndex %{ShibSessionIndex}e
 
 ------------
 
