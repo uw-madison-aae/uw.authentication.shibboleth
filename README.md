@@ -72,19 +72,6 @@ Starting with Shibboleth SP v3, using the iis7_shib.dll with the `useVariables="
         }
 3. Setup the hostingModel for InProcess.  [More information here.](https://weblog.west-wind.com/posts/2019/Mar/16/ASPNET-Core-Hosting-on-IIS-with-ASPNET-Core-22)
 
-#### Using IIS - isapi_shib.dll (or iis7_shib with useHeaders="true")
-This is **NOT** recommended by the authors of Shibboleth.  The server variables method in iis7_shib.dll is more secure.
-
-1. Download and install the [UW.AspNetCore.Authentication.Shibboleth](https://www.nuget.org/packages/UW.AspNetCore.Authentication.Shibboleth//) package.
-2.  Add the `AddUWShibbolethForIISWithHeaders()` to the `IAuthenticationBuilder` in Startup.cs.
-
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = ShibbolethDefaults.AuthenticationScheme;
-            }).AddUWShibbolethForIISWithHeaders();
-        }
 
 #### Using IIS - isapi_shib.dll (or iis7_shib with useHeaders="true")
 This is **NOT** recommended by the authors of Shibboleth.  The server variables method in iis7_shib.dll is more secure.
