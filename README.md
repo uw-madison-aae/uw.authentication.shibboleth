@@ -8,10 +8,13 @@ This library is for ASP.Net applications (ASP.Net Core 2.0+, ASP.Net 4.5+) and [
 - Shibboleth authentication itself is handled by IIS/Apache.  This library merely consumes Shibboleth data after authentication has taken place.
 
 ### Compatibility
-- ASP.Net Core 2.0+
+- ASP.Net Core 3.0+ (UW.AspNetCore.Authentication.Shibboleth v2.0+)
+- ASP.Net Core 2.0-2.2 (UW.AspNetCore.Authentication.Shibboleth v1.2)
 - ASP.Net MVC 4.5+
 - IIS7+ (ISAPI or IIS7 Shibboleth DLL)
 - Apache (Front-end proxy for ASP.Net Core 2.0+)
+
+**Please note for ASP.Net Core:** All code samples below work for ASP.Net Core 2.0 and above.  However, .Net Core 2.0-2.2 developers should install v1.2 of UW.AspNetCore.Authentication.Shibboleth.  v2.0 is for ASP.Net Core 3.0 and above only.
 
 _This documentation does NOT cover Shibboleth setup for IIS/Apache.  Please refer to [UW-Madison documentation](https://kb.wisc.edu/86317) for that information._
 
@@ -60,7 +63,10 @@ This is **NOT** recommended by the authors of Shibboleth.  The server variables 
 #### Using IIS - iis7_shib.dll (Recommended) - only compatible 2.2+
 Starting with Shibboleth SP v3, using the iis7_shib.dll with the `useVariables="true"` in either the `<ISAPI>` or `<Site>` sections is the recommended method for running Shibboleth in IIS7+.  Information about Shibboleth IIS installation [can be found here](https://wiki.shibboleth.net/confluence/display/SP3/IIS).  Variables are only available to .Net Core apps which are run InProcess, which is only available starting in ASP.Net Core 2.2.
 
-1. Download and install the [UW.AspNetCore.Authentication.Shibboleth](https://www.nuget.org/packages/UW.AspNetCore.Authentication.Shibboleth//) package.
+1. Download and install the [UW.AspNetCore.Authentication.Shibboleth](https://www.nuget.org/packages/UW.AspNetCore.Authentication.Shibboleth/) package.
+	- For ASP.Net Core 3.0+, download v2.0
+	- For ASP.Net Core 2.0-2.2, download v1.2
+
 2.  Add the `AddUWShibbolethForIISWithVariables()` to the `IAuthenticationBuilder` in Startup.cs.
 
         public void ConfigureServices(IServiceCollection services)
@@ -70,13 +76,15 @@ Starting with Shibboleth SP v3, using the iis7_shib.dll with the `useVariables="
                 options.DefaultScheme = ShibbolethDefaults.AuthenticationScheme;
             }).AddUWShibbolethForIISWithVariables();
         }
-3. Setup the hostingModel for InProcess.  [More information here.](https://weblog.west-wind.com/posts/2019/Mar/16/ASPNET-Core-Hosting-on-IIS-with-ASPNET-Core-22)
+3. For ASP.Net Core 2.2, setup the hostingModel for InProcess. This step is NOT necessary for ASP.Net Core 3.0+ as it is enabled by default.   [More information here.](https://weblog.west-wind.com/posts/2019/Mar/16/ASPNET-Core-Hosting-on-IIS-with-ASPNET-Core-22)
 
 
 #### Using IIS - isapi_shib.dll (or iis7_shib with useHeaders="true")
 This is **NOT** recommended by the authors of Shibboleth.  The server variables method in iis7_shib.dll is more secure.
 
-1. Download and install the [UW.AspNetCore.Authentication.Shibboleth](https://www.nuget.org/packages/UW.AspNetCore.Authentication.Shibboleth//) package.
+1. Download and install the [UW.AspNetCore.Authentication.Shibboleth](https://www.nuget.org/packages/UW.AspNetCore.Authentication.Shibboleth/) package.
+	- For ASP.Net Core 3.0+, download v2.0
+	- For ASP.Net Core 2.0-2.2, download v1.2
 2.  Add the `AddUWShibbolethForIISWithHeaders()` to the `IAuthenticationBuilder` in Startup.cs.
 
         public void ConfigureServices(IServiceCollection services)
@@ -89,7 +97,10 @@ This is **NOT** recommended by the authors of Shibboleth.  The server variables 
 
 #### Using Apache on Linux
 
-1. Download and install the [UW.AspNetCore.Authentication.Shibboleth](https://www.nuget.org/packages/UW.AspNetCore.Authentication.Shibboleth//) package.
+1. Download and install the [UW.AspNetCore.Authentication.Shibboleth](https://www.nuget.org/packages/UW.AspNetCore.Authentication.Shibboleth/) package.
+	- For ASP.Net Core 3.0+, download v2.0
+	- For ASP.Net Core 2.0-2.2, download v1.2
+	
 2.  Add the `AddUWShibbolethForLinux()` to the `IAuthenticationBuilder` in Startup.cs.
 
         public void ConfigureServices(IServiceCollection services)
@@ -180,7 +191,7 @@ To utilize during development, put the module in your Web.config.
       </system.webServer>
 
 ### ASP.Net Core 2.0+
-Add the `AddDevAuthentiction()` method onto the `IAuthenticationBuilder`.  You can either specify a list of claims for use in `ClaimsIdentity` creation, or you can specify fake headers/variables in a `Dictionary<string,string>` that will be processing like Shibboleth headers.
+Add the `AddDevAuthentication()` method onto the `IAuthenticationBuilder`.  You can either specify a list of claims for use in `ClaimsIdentity` creation, or you can specify fake headers/variables in a `Dictionary<string,string>` that will be processing like Shibboleth headers.
 
 ##### Fake headers/variables
 
@@ -221,4 +232,4 @@ Add the `AddDevAuthentiction()` method onto the `IAuthenticationBuilder`.  You c
 There are sample projects available in the source solution to show each of these working in their entirety.
  - **SampleMVCNet47** .Net MVC Framework 4.7 app using the `HttpModule` and local dev modules.
 
- - **SampleMVCCore** .Net Core 2.2 app using the `IAuthenticationBuilder` extensions for both local development and Shibboleth production
+ - **SampleMVCCore** .Net Core 3.0 app using the `IAuthenticationBuilder` extensions for both local development and Shibboleth production
