@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Server.IIS;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
@@ -21,7 +20,7 @@ namespace UW.AspNetCore.Authentication
         public override bool IsShibbolethSession()
         {
             // look for the presence of the Shib-Session-Index - indicates a Shibboleth session in effect
-            return !string.IsNullOrEmpty(Request.HttpContext.GetIISServerVariable("Shib-Session-ID"));
+            return !string.IsNullOrEmpty(Request.HttpContext.GetServerVariable("Shib-Session-ID"));
         }
 
         public override ShibbolethAttributeValueCollection GetAttributesFromRequest()
@@ -41,7 +40,7 @@ namespace UW.AspNetCore.Authentication
             var distinct_ids = attributes.GroupBy(a => a.Id).Select(a => a.First());
             foreach (var attrib in distinct_ids)
             {
-                var value = context.GetIISServerVariable(attrib.Id);
+                var value = context.GetServerVariable(attrib.Id);
                 if (!string.IsNullOrEmpty(value))
                 {
                     ret_dict.Add(new ShibbolethAttributeValue(attrib.Id, value));

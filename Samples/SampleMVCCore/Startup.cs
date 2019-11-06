@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
 using System.Security.Claims;
 using UW.AspNetCore.Authentication;
@@ -13,9 +14,9 @@ namespace SampleMVCCore
     {
 
         private IConfiguration Configuration { get; }
-        public IHostingEnvironment Environment { get; }
+        public IWebHostEnvironment Environment { get; }
 
-        public Startup(IHostingEnvironment env, IConfiguration config)
+        public Startup(IWebHostEnvironment env, IConfiguration config)
         {
             Configuration = config;
             Environment = env;
@@ -71,7 +72,7 @@ namespace SampleMVCCore
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -80,7 +81,15 @@ namespace SampleMVCCore
 
             app.UseAuthentication();
 
-            app.UseMvcWithDefaultRoute();
+            app.UseAuthorization();
+
+            app.UseRouting();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+            });
         }
     }
 }
