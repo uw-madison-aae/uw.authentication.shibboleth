@@ -11,13 +11,8 @@ namespace UW.AspNet.Authentication
     /// <summary>
     /// Base module for processing a request containing a Shbboleth user and populating a ClaimsPrincipal
     /// </summary>
-    public abstract class ShibbolethClaimsAuthenticationHttpModule : ClaimsAuthenticationHttpModule
+    public class ShibbolethClaimsAuthenticationHttpModule : ClaimsAuthenticationHttpModule
     {
-        /// <summary>
-        /// A collection of Shibboleth claim actions used to select values from the user data and create Claims.
-        /// </summary>
-        public ShibbolethClaimActionCollection ClaimActions { get; } = new ShibbolethClaimActionCollection();
-
         public override IPrincipal GetClaimsPrincipal(HttpContext context)
         {
 
@@ -99,14 +94,51 @@ namespace UW.AspNet.Authentication
 
             var identity = new ClaimsIdentity(schemeName);
 
+            var claimActions = GetClaimActions();
+
             // examine the specified user data, determine if requisite data is present, and optionally add it
-            foreach (var action in ClaimActions)
+            foreach (var action in claimActions)
             {
                 action.Run(userData, identity, claimsIssuer ?? schemeName);
             }
 
 
+            //var claims = new List<string>();
+            //foreach(var claim in identity.Claims)
+            //{
+            //    claims.Add($"{claim.Type} = {claim.Value}");
+            //}
+
+            //throw new System.Exception($"Claims: {string.Join("|", claims)}");
+
             return new ClaimsPrincipal(identity);
+        }
+
+        public virtual ShibbolethClaimActionCollection GetClaimActions()
+        {
+            var claimActions = new ShibbolethClaimActionCollection();
+
+            claimActions.MapAttribute(UWShibbolethClaimsType.FIRSTNAME, "givenName");
+            claimActions.MapAttribute(UWShibbolethClaimsType.LASTNAME, "sn");
+            claimActions.MapAttribute(UWShibbolethClaimsType.PVI, "wiscEduPVI");
+            claimActions.MapAttribute(UWShibbolethClaimsType.EPPN, "eppn");
+
+            claimActions.MapCustomAttribute(UWShibbolethClaimsType.UID, "uid", value =>
+            {
+                return value.ToLower();
+            });
+
+            claimActions.MapCustomAttribute(UWShibbolethClaimsType.EMAIL, "mail", value =>
+            {
+                return value.ToLower();
+            });
+
+            claimActions.MapCustomMultiValueAttribute(UWShibbolethClaimsType.Group, "isMemberOf", value =>
+            {
+                return value.Split(';').ToList();
+            });
+
+            return claimActions;
         }
 
         /// <summary>

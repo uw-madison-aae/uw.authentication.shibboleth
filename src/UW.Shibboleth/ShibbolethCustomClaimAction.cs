@@ -6,7 +6,7 @@ namespace UW.Shibboleth
     /// <summary>
     /// ShibbolethClaimAction that processes the value from the user data after extraction by running the given Func processor
     /// </summary>
-    public class ShibbolethCustomClaimAction : ShibbolethClaimAction
+    public class ShibbolethCustomClaimAction : ShibbolethAttributeClaimAction
     {
         /// <summary>
         /// Creates a new <see cref="ShibbolethCustomClaimAction"/>

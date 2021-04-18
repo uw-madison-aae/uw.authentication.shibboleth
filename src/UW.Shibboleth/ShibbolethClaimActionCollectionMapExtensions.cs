@@ -41,7 +41,7 @@ namespace UW.Shibboleth
             if (collection == null)
                 throw new ArgumentNullException(nameof(ShibbolethClaimActionCollectionMapExtensions));
 
-            collection.Add(new ShibbolethClaimAction(claimType, valueType, attributeName));
+            collection.Add(new ShibbolethAttributeClaimAction(claimType, valueType, attributeName));
         }
 
 
@@ -116,6 +116,44 @@ namespace UW.Shibboleth
             }
 
             collection.Add(new ShibbolethCustomMultiValueClaimAction(claimType, valueType, attributeName, processor));
+        }
+
+        /// <summary>
+        /// Delete all claims from the given ClaimsIdentity with the given ClaimType.
+        /// </summary>
+        /// <param name="collection">The <see cref="ShibbolethClaimActionCollection"/>.</param>
+        /// <param name="claimType">The claim type to delete</param>
+        public static void DeleteClaim(this ShibbolethClaimActionCollection collection, string claimType)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+
+            collection.Add(new ShibbolethDeleteClaimAction(claimType));
+        }
+
+        /// <summary>
+        /// Delete all claims from the ClaimsIdentity with the given claimTypes.
+        /// </summary>
+        /// <param name="collection">The <see cref="ShibbolethClaimActionCollection"/>.</param>
+        /// <param name="claimTypes">The claim types to delete.</param>
+        public static void DeleteClaims(this ShibbolethClaimActionCollection collection, params string[] claimTypes)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+
+            if (claimTypes == null)
+            {
+                throw new ArgumentNullException(nameof(claimTypes));
+            }
+
+            foreach (var claimType in claimTypes)
+            {
+                collection.Add(new ShibbolethDeleteClaimAction(claimType));
+            }
         }
     }
 }
