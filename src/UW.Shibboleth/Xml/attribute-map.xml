@@ -38,6 +38,7 @@
     <Attribute name="urn:oid:1.3.6.1.4.1.214.52.1.263" id="wiscEduManifestSubjectID"/>
     <Attribute name="urn:oid:1.3.6.1.4.1.214.52.1.264" id="wiscEduLibraryPatronID"/>
     <Attribute name="urn:oid:1.3.6.1.4.1.214.52.1.266" id="wiscEduMSOLAddresses"/>
+    <Attribute name="urn:oid:1.3.6.1.4.1.214.52.1.269" id="wiscEduPreferredName"/>
     <Attribute name="urn:oid:1.3.6.1.4.1.214.52.1.276" id="wiscEduMSOLPrimaryAddress"/>
     <Attribute name="urn:oid:1.3.6.1.4.1.214.52.1.279" id="wiscEduWiscardAccountNumber"/>
     <Attribute name="urn:oid:1.3.6.1.4.1.214.52.1.280" id="wiscEduSORFirstName"/>
@@ -51,10 +52,9 @@
     <Attribute name="urn:oid:1.3.6.1.4.1.5782.52.1.8" id="eduWisconsinHRSEmplID"/>
     <Attribute name="urn:oid:1.3.6.1.4.1.5782.52.1.16" id="eduWisconsinOIMRoles"/>
     <Attribute name="urn:oid:1.3.6.1.4.1.5782.52.1.33" id="eduWisconsinLibraryILLiadID"/>
+    <Attribute name="urn:oid:1.3.6.1.4.1.5782.52.1.37" id="eduWisconsinHRSRoles"/>
+    <Attribute name="urn:oid:1.3.6.1.4.1.5782.52.1.38" id="eduWisconsinETFMemberID"/>
 
-    <Attribute name="https://www.commonidtrust.org/attributes/commitID" id="commitID"/>
-    <Attribute name="https://www.commonidtrust.org/attributes/dateOfBirth" id="dateOfBirth"/>
-    
     <!-- First some useful eduPerson attributes that many sites might use. -->
     
     <Attribute name="urn:mace:dir:attribute-def:eduPersonPrincipalName" id="eppn">

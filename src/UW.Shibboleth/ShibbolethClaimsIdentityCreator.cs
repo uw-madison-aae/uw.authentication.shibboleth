@@ -31,10 +31,14 @@ namespace UW.Shibboleth
             return ident;
         }
 
-
+        /// <summary>
+        /// Creates a <see cref="ClaimsIdentity"/> populated with the 
+        /// </summary>
+        /// <param name="collection"></param>
+        /// <returns></returns>
         public static ClaimsIdentity CreateIdentity(ShibbolethAttributeValueCollection collection)
         {
-            return CreateIdentity(collection, ShibbolethDefaults.AuthenticationScheme);
+            return CreateIdentity(collection, ShibbolethAuthenticationDefaults.AuthenticationScheme);
         }
     }
 }
