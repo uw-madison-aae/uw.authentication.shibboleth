@@ -89,7 +89,7 @@ namespace UW.AspNetCore.Authentication
         /// <summary>
         /// Creates a <see cref="ClaimsIdentity"/> using the minimum Shibboleth attributes
         /// </summary>
-        /// <param name="collection"></param>
+        /// <param name="userData"></param>
         /// <returns></returns>
         public virtual ClaimsPrincipal CreateClaimsPrincipal(ShibbolethAttributeValueCollection userData)
         {

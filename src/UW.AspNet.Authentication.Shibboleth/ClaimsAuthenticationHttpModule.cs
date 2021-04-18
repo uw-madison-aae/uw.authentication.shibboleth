@@ -36,5 +36,6 @@ namespace UW.AspNet.Authentication
         /// </summary>
         public abstract IPrincipal GetClaimsPrincipal(HttpContext context);
 
+        
     }
 }

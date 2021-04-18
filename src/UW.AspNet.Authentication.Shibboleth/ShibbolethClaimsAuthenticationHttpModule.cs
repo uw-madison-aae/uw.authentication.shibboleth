@@ -13,14 +13,21 @@ namespace UW.AspNet.Authentication
     /// </summary>
     public abstract class ShibbolethClaimsAuthenticationHttpModule : ClaimsAuthenticationHttpModule
     {
+        /// <summary>
+        /// A collection of Shibboleth claim actions used to select values from the user data and create Claims.
+        /// </summary>
+        public ShibbolethClaimActionCollection ClaimActions { get; } = new ShibbolethClaimActionCollection();
+
         public override IPrincipal GetClaimsPrincipal(HttpContext context)
         {
-            
+
 
             // check if this is even a Shibboleth session
-            if (IsShibbolethSession(context.Request))
+            var shibSessionType = IsShibbolethSession(context.Request);
+
+            if (shibSessionType != ShibbolethSessionType.None)
             {
-                var attributes = GetAttributesFromRequest(context.Request);
+                var attributes = GetAttributesFromRequest(context.Request, shibSessionType);
 
                 return CreateClaimsPrincipal(attributes);
             } else
@@ -33,23 +40,73 @@ namespace UW.AspNet.Authentication
         /// <summary>
         /// Retrieves Shibboleth attributes from the Shibboleth session collection
         /// </summary>
-        public abstract ShibbolethAttributeValueCollection GetAttributesFromRequest(HttpRequest request);
+        protected virtual ShibbolethAttributeValueCollection GetAttributesFromRequest(HttpRequest request, ShibbolethSessionType sessionType) {
+
+            var attributes = GetShibbolethAttributes();
+            switch (sessionType)
+            {
+                case ShibbolethSessionType.Header:
+                    return ExtractAttributes(request.Headers, attributes);
+                case ShibbolethSessionType.Variable:
+                    return ExtractAttributes(request.ServerVariables, attributes);
+                default:
+                    throw new System.Exception($"Invalid Shibboleth session type - cannot extract attributes for {sessionType}");
+            }
+        
+        }
 
         /// <summary>
         /// Whether the session collection indicates this is a Shibboleth session
         /// </summary>
-        public abstract bool IsShibbolethSession(HttpRequest request);
+        protected virtual ShibbolethSessionType IsShibbolethSession(HttpRequest request)
+        {
+            // check for variables first.  This is the preferred method when using IIS7 and considered more secure
+            // https://wiki.shibboleth.net/confluence/display/SP3/AttributeAccess#AttributeAccess-ServerVariables
 
+            // must be done with the NameValueCollection because Shibboleth Server Variables don't show up in the AllKeys
+            if (request.ServerVariables.GetValues(ShibbolethAuthenticationDefaults.VariableShibIndexName) != null)
+                return ShibbolethSessionType.Variable;
+
+            // nothing found in the server variables.  Now check for a session in the headers
+            if (request.Headers.GetValues(ShibbolethAuthenticationDefaults.HeaderShibIndexName) != null)
+                return ShibbolethSessionType.Header;
+
+            // nothing found - no Shibboleth session
+            return ShibbolethSessionType.None;
+
+        }
+
+
+        /// <summary>
+        /// Returns the attribute mapping from the XML stored in UW.Shibboleth
+        /// </summary>
         public virtual IList<IShibbolethAttribute> GetShibbolethAttributes()
         {
             return ShibbolethDefaultAttributes.GetAttributeMapping();
 
         }
 
-        public virtual ClaimsPrincipal CreateClaimsPrincipal(ShibbolethAttributeValueCollection collection)
+        /// <summary>
+        /// Creates a <see cref="ClaimsIdentity"/> using the minimum Shibboleth attributes
+        /// </summary>
+        /// <param name="userData"></param>
+        /// <returns></returns>
+        public virtual ClaimsPrincipal CreateClaimsPrincipal(ShibbolethAttributeValueCollection userData)
         {
-            var ident = ShibbolethClaimsIdentityCreator.CreateIdentity(collection);
-            return new ClaimsPrincipal(ident);
+
+            var schemeName = ShibbolethAuthenticationDefaults.AuthenticationScheme;
+            var claimsIssuer = ShibbolethAuthenticationDefaults.Issuer;
+
+            var identity = new ClaimsIdentity(schemeName);
+
+            // examine the specified user data, determine if requisite data is present, and optionally add it
+            foreach (var action in ClaimActions)
+            {
+                action.Run(userData, identity, claimsIssuer ?? schemeName);
+            }
+
+
+            return new ClaimsPrincipal(identity);
         }
 
         /// <summary>
@@ -72,6 +129,13 @@ namespace UW.AspNet.Authentication
             }
 
             return ret_dict;
+        }
+
+        protected enum ShibbolethSessionType
+        {
+            Variable,
+            Header,
+            None
         }
     }
 }
