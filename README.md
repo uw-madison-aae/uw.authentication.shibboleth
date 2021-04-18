@@ -1,6 +1,6 @@
 # UW.Authentication
 
-This library is for ASP.Net applications (ASP.Net Core 3.1+) and [Shibboleth](https://www.shibboleth.net/) authentication at the University of Wisconsin-Madison. Although the library is created using UW Shibboleth attributes, it can be overriden to utilize alternative attribute mappings for other systems.
+This library is for ASP.Net applications (ASP.Net 5.0+) and [Shibboleth](https://www.shibboleth.net/) authentication at the University of Wisconsin-Madison. Although the library is created using UW Shibboleth attributes, it can be overriden to utilize alternative attribute mappings for other systems.
 
 ### Purpose
 - Handle MVC authentication in order to utilize things like the [Authorize] attribute
@@ -8,9 +8,9 @@ This library is for ASP.Net applications (ASP.Net Core 3.1+) and [Shibboleth](ht
 - Shibboleth authentication itself is handled by IIS/Apache.  This library merely consumes Shibboleth data after authentication has taken place.
 
 ### Compatibility
-- ASP.Net Core 3.1+
+- ASP.Net Core 5.0+
 - IIS7+ (ISAPI or IIS7 Shibboleth DLL)
-- Apache (Front-end proxy for ASP.Net Core 3.1+)
+- Apache (Front-end proxy for ASP.Net 5.0+)
 
 _This documentation does NOT cover Shibboleth setup for IIS/Apache.  Please refer to [UW-Madison documentation](https://kb.wisc.edu/86317) for that information._
 
@@ -37,7 +37,7 @@ Starting with Shibboleth SP v3, using the iis7_shib.dll with the `useVariables="
 
 #### Using Apache on Linux
 
-Headers must be forwarded from the Apache Reverse Proxy into the .Net Core app running on Kestrel.  This is done using the `RequestHeader` declaration.  You must manually define every header from Shibboleth that you wish to use in the ASP.Net app.   **ShibSessionIndex** is **required** at a minimum, as that is what the library uses to determine if a Shibboleth session is in place.
+Headers must be forwarded from the Apache Reverse Proxy into the ASP.Net app running on Kestrel.  This is done using the `RequestHeader` declaration.  You must manually define every header from Shibboleth that you wish to use in the ASP.Net app.   **ShibSessionIndex** is **required** at a minimum, as that is what the library uses to determine if a Shibboleth session is in place.
 
 		RequestHeader set isMemberOf %{isMemberOf}e
 		RequestHeader set eppn %{eppn}e
@@ -92,4 +92,4 @@ Add the `AddDevAuthentication()` method onto the `IAuthenticationBuilder`.  You 
 ------------
 
 There is a sample project available in the source solution to show how this works in its entirety.
- - **SampleMVCCore** .Net Core 3.1 app using the `IAuthenticationBuilder` extensions for both local development and Shibboleth production
+ - **SampleMVCCore** .Net 5.0 app using the `IAuthenticationBuilder` extensions for both local development and Shibboleth production
