@@ -86,10 +86,22 @@ namespace UW.AspNetCore.Authentication
 
         }
 
-        public virtual ClaimsPrincipal CreateClaimsPrincipal(ShibbolethAttributeValueCollection collection)
+        /// <summary>
+        /// Creates a <see cref="ClaimsIdentity"/> using the minimum Shibboleth attributes
+        /// </summary>
+        /// <param name="collection"></param>
+        /// <returns></returns>
+        public virtual ClaimsPrincipal CreateClaimsPrincipal(ShibbolethAttributeValueCollection userData)
         {
-            var ident = ShibbolethClaimsIdentityCreator.CreateIdentity(collection);
-            return new ClaimsPrincipal(ident);
+            var identity = new ClaimsIdentity(Scheme.Name);
+
+            // examine the specified user data, determine if requisite data is present, and optionally add it
+            foreach(var action in Options.ClaimActions)
+            {
+                action.Run(userData, identity, Options.ClaimsIssuer ?? Scheme.Name);
+            }
+
+            return new ClaimsPrincipal(identity);
         }
 
         /// <summary>

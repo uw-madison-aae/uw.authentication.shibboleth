@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net45</TargetFramework>
@@ -9,7 +9,7 @@
     <Description>Library used to handle UW's Shibboleth authentication in ASP.NET web applications.</Description>
     <Company>AAE IT Services Center</Company>
     <Authors>Eric Dieckman</Authors>
-    <Version>1.2.0</Version>
+    <Version>2.0.0-beta1</Version>
     <PackageLicenseFile>license.txt</PackageLicenseFile>
     <PackageProjectUrl>https://git.aae.wisc.edu/lib/uw.authentication.shibboleth</PackageProjectUrl>
     <RepositoryUrl>https://git.aae.wisc.edu/lib/uw.authentication.shibboleth.git</RepositoryUrl>
@@ -23,9 +23,8 @@
     </None>
   </ItemGroup>
 
-
   <ItemGroup>
-    <PackageReference Include="UW.Shibboleth" Version="3.1.0" />
+    <ProjectReference Include="..\UW.Shibboleth\UW.Shibboleth.csproj" />
   </ItemGroup>
 
   <ItemGroup>
