@@ -102,15 +102,6 @@ namespace UW.AspNet.Authentication
                 action.Run(userData, identity, claimsIssuer ?? schemeName);
             }
 
-
-            //var claims = new List<string>();
-            //foreach(var claim in identity.Claims)
-            //{
-            //    claims.Add($"{claim.Type} = {claim.Value}");
-            //}
-
-            //throw new System.Exception($"Claims: {string.Join("|", claims)}");
-
             return new ClaimsPrincipal(identity);
         }
 

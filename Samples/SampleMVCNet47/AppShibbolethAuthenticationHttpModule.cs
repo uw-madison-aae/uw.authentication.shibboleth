@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Security.Claims;
+using System.Web;
 using UW.AspNet.Authentication;
 using UW.Shibboleth;
 
@@ -10,8 +10,7 @@ namespace SampleMVCNet47
     /// </summary>
     public class AppShibbolethAuthenticationHttpModule : LocalDevClaimsAuthenticationHttpModule
     {
-        // provide a ClaimsIdentity to the module to fake authentication
-        public override ClaimsIdentity GetClaimsIdentity()
+        protected override ShibbolethAttributeValueCollection GetAttributesFromRequest(HttpRequest request, ShibbolethSessionType sessionType)
         {
             // create a dictionary to store "fake" headers/variables
             var variable_dict = new Dictionary<string, string>();
@@ -24,8 +23,7 @@ namespace SampleMVCNet47
             variable_dict.Add("isMemberOf", "uw:domain:dept.wisc.edu:administrativestaff;uw:domain:dept.wisc.edu:it:sysadmin");
 
             // Create a ShibbolethAttributeValueCollection with the fake headers/variables, then use the ShibbolethClaimsIdentityCreatetor to make the ClaimsIdentity            
-            return ShibbolethClaimsIdentityCreator.CreateIdentity(new ShibbolethAttributeValueCollection(variable_dict));
+            return new ShibbolethAttributeValueCollection(variable_dict);
         }
-
     }
 }

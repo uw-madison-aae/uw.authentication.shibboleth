@@ -1,20 +1,22 @@
-﻿using System;
-using System.Security.Claims;
-using System.Security.Principal;
-using System.Web;
+﻿using System.Web;
+using UW.Shibboleth;
 
 namespace UW.AspNet.Authentication
 {
     /// <summary>
     /// Local development claims - must be overridden in each app to manually specify a user/claims
     /// </summary>
-    public abstract class LocalDevClaimsAuthenticationHttpModule : ClaimsAuthenticationHttpModule
+    public abstract class LocalDevClaimsAuthenticationHttpModule : ShibbolethClaimsAuthenticationHttpModule
     {
-        public override IPrincipal GetClaimsPrincipal(HttpContext context)
+        protected override ShibbolethAttributeValueCollection GetAttributesFromRequest(HttpRequest request, ShibbolethSessionType sessionType)
         {
-            return new ClaimsPrincipal(GetClaimsIdentity());
+            return base.GetAttributesFromRequest(request, sessionType);
         }
 
-        public abstract ClaimsIdentity GetClaimsIdentity();
+        protected override ShibbolethSessionType IsShibbolethSession(HttpRequest request)
+        {
+            // return something other than None
+            return ShibbolethSessionType.Variable;
+        }
     }
 }
