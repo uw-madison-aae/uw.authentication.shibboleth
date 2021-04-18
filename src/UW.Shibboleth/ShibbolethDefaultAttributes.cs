@@ -23,14 +23,11 @@ namespace UW.Shibboleth
             AttributesRoot attrib_root;
 
             var resourceName = "UW.Shibboleth.Xml.attribute-map.xml";
-            //using (FileStream fileStream = new FileStream(filePath, FileMode.Open))
             
             using (Stream resourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
             {
                 using (StreamReader sr = new StreamReader(resourceStream))
                 {
-                    //sr.ReadToEnd();
-
                     attrib_root = (AttributesRoot)serializer.Deserialize(sr);
                 }
 

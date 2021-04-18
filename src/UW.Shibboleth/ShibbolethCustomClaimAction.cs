@@ -33,7 +33,7 @@ namespace UW.Shibboleth
             {
                 var processedValue = Processor(value);
                 if (!string.IsNullOrEmpty(processedValue))
-                    identity.AddClaim(new Claim(ValueType, processedValue, ValueType, issuer));
+                    identity.AddClaim(new Claim(ClaimType, processedValue, ValueType, issuer));
             }
                 
         }

@@ -49,7 +49,7 @@ namespace UW.Shibboleth
                 var value = GetValue(userData, AttributeName);
 
                 if (!string.IsNullOrEmpty(value))
-                    identity.AddClaim(new Claim(ValueType, value, ValueType, issuer));
+                    identity.AddClaim(new Claim(ClaimType, value, ValueType, issuer));
         }
 
         protected static string GetValue(ShibbolethAttributeValueCollection userData, string attributeName) {

@@ -16,7 +16,7 @@ namespace UW.AspNetCore.Authentication
         /// </summary>
         /// <param name="builder">The authentication builder.</param>
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
-        public static AuthenticationBuilder AddAmazon([NotNull] this AuthenticationBuilder builder)
+        public static AuthenticationBuilder AddUWShibboleth([NotNull] this AuthenticationBuilder builder)
         {
             return builder.AddUWShibboleth(ShibbolethAuthenticationDefaults.AuthenticationScheme, options => { });
         }

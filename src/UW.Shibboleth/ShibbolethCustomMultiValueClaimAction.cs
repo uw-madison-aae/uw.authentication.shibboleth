@@ -36,7 +36,7 @@ namespace UW.Shibboleth
                 foreach(var processedValue in processedValues)      
                 {
                     if (!string.IsNullOrEmpty(processedValue))
-                        identity.AddClaim(new Claim(ValueType, processedValue, ValueType, issuer));
+                        identity.AddClaim(new Claim(ClaimType, processedValue, ValueType, issuer));
                 }
                 
             }

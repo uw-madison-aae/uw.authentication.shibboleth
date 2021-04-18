@@ -34,8 +34,8 @@ namespace SampleMVCCore
                 //authentication with Shibboleth
                 services.AddAuthentication(options =>
                 {
-                    options.DefaultScheme = ShibbolethDefaults.AuthenticationScheme;
-                }).AddUWShibbolethForIISWithVariables();
+                    options.DefaultScheme = ShibbolethAuthenticationDefaults.AuthenticationScheme;
+                }).AddUWShibboleth();
             }
             else
             {
@@ -43,7 +43,7 @@ namespace SampleMVCCore
                 // use the shibboleth processor to process these fake header/variables
                 services.AddAuthentication(options =>
                 {
-                    options.DefaultScheme = ShibbolethDefaults.AuthenticationScheme;
+                    options.DefaultScheme = ShibbolethAuthenticationDefaults.AuthenticationScheme;
                 }).AddDevAuthentication(new Dictionary<string, string>() {
                     {"uid", "bbadger" },
                     {"givenName", "Bucky" },
