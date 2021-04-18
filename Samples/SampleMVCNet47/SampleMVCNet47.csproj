@@ -117,11 +117,11 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\UW.AspNet.Authentication.Shibboleth\UW.AspNet.Authentication.Shibboleth.csproj">
+    <ProjectReference Include="..\..\src\UW.AspNet.Authentication.Shibboleth\UW.AspNet.Authentication.Shibboleth.csproj">
       <Project>{f34c61b7-086c-47da-838a-8b0ff915c41b}</Project>
       <Name>UW.AspNet.Authentication.Shibboleth</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\UW.Shibboleth\UW.Shibboleth.csproj">
+    <ProjectReference Include="..\..\src\UW.Shibboleth\UW.Shibboleth.csproj">
       <Project>{5520c55d-0293-40ff-8991-4e1122050819}</Project>
       <Name>UW.Shibboleth</Name>
     </ProjectReference>
