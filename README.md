@@ -2,6 +2,8 @@
 
 This library is for ASP.Net applications (ASP.Net 5.0+) and [Shibboleth](https://www.shibboleth.net/) authentication at the University of Wisconsin-Madison. Although the library is created using UW Shibboleth attributes, it can be overriden to utilize alternative attribute mappings for other systems.
 
+>*For those still running .Net Framework, see the [rel/2.0 branch](-/tree/rel/aspnet-2.0) for a library that uses `IHttpModule` to work with .Net Framework 4.7.2+ apps.*
+
 ### Purpose
 - Handle MVC authentication in order to utilize things like the [Authorize] attribute
 - Set HttpContext.User.Identity to a ClaimsIdentity populated with Shibboleth attributes
