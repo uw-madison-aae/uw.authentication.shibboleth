@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.202
@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Authentication", "Authentic
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shibboleth", "Shibboleth", "{478CF894-055A-4E61-A90C-219DEF432A6B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UW.Shibboleth", "UW.Shibboleth\UW.Shibboleth.csproj", "{5520C55D-0293-40FF-8991-4E1122050819}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UW.Shibboleth", "src\UW.Shibboleth\UW.Shibboleth.csproj", "{5520C55D-0293-40FF-8991-4E1122050819}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{FE0BA5C9-5720-4C57-82C5-A8A43FB8AF62}"
 EndProject
@@ -15,9 +15,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleMVCNet47", "Samples\S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleMVCCore", "Samples\SampleMVCCore\SampleMVCCore.csproj", "{6E3EF12E-F0B3-4577-A916-44CDB25A1D1A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UW.AspNet.Authentication.Shibboleth", "UW.AspNet.Authentication.Shibboleth\UW.AspNet.Authentication.Shibboleth.csproj", "{F34C61B7-086C-47DA-838A-8B0FF915C41B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UW.AspNet.Authentication.Shibboleth", "src\UW.AspNet.Authentication.Shibboleth\UW.AspNet.Authentication.Shibboleth.csproj", "{F34C61B7-086C-47DA-838A-8B0FF915C41B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UW.AspNetCore.Authentication.Shibboleth", "UW.AspNetCore.Authentication.Shibboleth\UW.AspNetCore.Authentication.Shibboleth.csproj", "{19AB6D89-66AC-436A-8B82-974F48E9C4D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UW.AspNetCore.Authentication.Shibboleth", "src\UW.AspNetCore.Authentication.Shibboleth\UW.AspNetCore.Authentication.Shibboleth.csproj", "{19AB6D89-66AC-436A-8B82-974F48E9C4D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
