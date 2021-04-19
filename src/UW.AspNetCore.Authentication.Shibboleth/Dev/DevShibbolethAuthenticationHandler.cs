@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 using UW.Shibboleth;
 
 namespace UW.AspNetCore.Authentication
@@ -26,14 +25,21 @@ namespace UW.AspNetCore.Authentication
                 throw new System.Exception("No user variables/headers specified for Dev Shibboleth authentication.");
             }
 
-            var collection = new ShibbolethAttributeValueCollection(Options.FakeUserVariables);
-            ClaimsIdentity ident = ShibbolethClaimsIdentityCreator.CreateIdentity(collection,DevAuthenticationDefaults.AuthenticationScheme);
+            var userData = new ShibbolethAttributeValueCollection(Options.FakeUserVariables);
+            var identity = new ClaimsIdentity(Scheme.Name);
+
+            // examine the specified user data, determine if requisite data is present, and optionally add it
+            foreach (var action in Options.ClaimActions)
+            {
+                action.Run(userData, identity, Options.ClaimsIssuer ?? Scheme.Name);
+            }
 
             // add in any additional claims
             if (Options.UserClaims != null)
-                ident.AddClaims(Options.UserClaims);
-            
-            return ident;
+                identity.AddClaims(Options.UserClaims);
+
+            return identity;
+
         }
     }
 }
