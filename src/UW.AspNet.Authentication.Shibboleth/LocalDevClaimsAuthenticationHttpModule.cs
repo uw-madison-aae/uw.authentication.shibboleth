@@ -8,10 +8,7 @@ namespace UW.AspNet.Authentication
     /// </summary>
     public abstract class LocalDevClaimsAuthenticationHttpModule : ShibbolethClaimsAuthenticationHttpModule
     {
-        protected override ShibbolethAttributeValueCollection GetAttributesFromRequest(HttpRequest request, ShibbolethSessionType sessionType)
-        {
-            return base.GetAttributesFromRequest(request, sessionType);
-        }
+        protected abstract override ShibbolethAttributeValueCollection GetAttributesFromRequest(HttpRequest request, ShibbolethSessionType sessionType);
 
         protected override ShibbolethSessionType IsShibbolethSession(HttpRequest request)
         {

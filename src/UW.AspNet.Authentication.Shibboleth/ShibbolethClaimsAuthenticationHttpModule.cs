@@ -105,7 +105,7 @@ namespace UW.AspNet.Authentication
             return new ClaimsPrincipal(identity);
         }
 
-        public virtual ShibbolethClaimActionCollection GetClaimActions()
+        protected virtual ShibbolethClaimActionCollection GetClaimActions()
         {
             var claimActions = new ShibbolethClaimActionCollection();
 

@@ -22,8 +22,19 @@ namespace SampleMVCNet47
             variable_dict.Add("wiscEduPVI", "UW999A999");
             variable_dict.Add("isMemberOf", "uw:domain:dept.wisc.edu:administrativestaff;uw:domain:dept.wisc.edu:it:sysadmin");
 
-            // Create a ShibbolethAttributeValueCollection with the fake headers/variables, then use the ShibbolethClaimsIdentityCreatetor to make the ClaimsIdentity            
             return new ShibbolethAttributeValueCollection(variable_dict);
+        }
+
+        protected override ShibbolethClaimActionCollection GetClaimActions()
+        {
+            var claimActions = new ShibbolethClaimActionCollection();
+
+            claimActions.MapAttribute(StandardClaimTypes.GivenName, "givenName");
+            claimActions.MapAttribute(StandardClaimTypes.Surname, "sn");
+            claimActions.MapAttribute(StandardClaimTypes.PPID, "wiscEduPVI");
+            claimActions.MapAttribute(StandardClaimTypes.Name, "uid");
+
+            return claimActions;
         }
     }
 }
