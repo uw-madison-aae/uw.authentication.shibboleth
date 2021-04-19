@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <Authors>Eric Dieckman</Authors>
     <Company>AAE IT Services Center</Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Library for handling UW's Shibboleth authentication in ASP.Net web applications</Description>
     <RepositoryUrl>https://git.aae.wisc.edu/lib/uw.authentication.shibboleth.git</RepositoryUrl>
-    <Version>5.0.0</Version>
+    <Version>3.1.0</Version>
     <RootNamespace>UW.AspNetCore.Authentication</RootNamespace>
     <PackageProjectUrl>https://git.aae.wisc.edu/lib/uw.authentication.shibboleth</PackageProjectUrl>
     <PackageLicenseFile>license.txt</PackageLicenseFile>
