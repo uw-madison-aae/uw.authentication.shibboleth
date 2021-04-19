@@ -61,19 +61,6 @@ public class AppShibbolethAuthenticationHttpModule : LocalDevClaimsAuthenticatio
 
         return new ShibbolethAttributeValueCollection(variable_dict);
     }
-
-    // You can override the GetClaimActions 
-    protected override ShibbolethClaimActionCollection GetClaimActions()
-    {
-        var claimActions = new ShibbolethClaimActionCollection();
-
-        claimActions.MapAttribute(StandardClaimTypes.GivenName, "givenName");
-        claimActions.MapAttribute(StandardClaimTypes.Surname, "sn");
-        claimActions.MapAttribute(StandardClaimTypes.PPID, "wiscEduPVI");
-        claimActions.MapAttribute(StandardClaimTypes.Name, "uid");
-
-        return claimActions;
-    }
 }
 ```
 To utilize during development, put the module in your Web.config.
@@ -125,6 +112,11 @@ protected override ShibbolethClaimActionCollection GetClaimActions()
     return claimActions;
 }
 ```
+
+### Other Overridable Methods
+* `CreateClaimsPrincipal` - creates the actual `ClaimsPrincipal`.  
+* `IsShibbolethSession` - determines whether a Shibboleth session is present (user is authenticated)
+* `GetShibbolethAttributes` - returns the list of Shibboleth attribute mapping (name and ID) from the standard UW Shibboleth attribute-map.xml
 ------------
 
 There are sample projects available in the source solution to show each of these working in their entirety.
