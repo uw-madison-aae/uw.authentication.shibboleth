@@ -1,6 +1,6 @@
 # UW.Authentication
 
-This library is for ASP.Net applications (ASP.Net 5.0+) and [Shibboleth](https://www.shibboleth.net/) authentication at the University of Wisconsin-Madison. Although the library is created using UW Shibboleth attributes, it can be overriden to utilize alternative attribute mappings for other systems.
+This library is for ASP.Net applications (ASP.Net 3.1/5/6+) and [Shibboleth](https://www.shibboleth.net/) authentication at the University of Wisconsin-Madison. Although the library is created using UW Shibboleth attributes, it can be overriden to utilize alternative attribute mappings for other systems.
 
 >*For those still running .Net Framework, see the [rel/2.0 branch](../../tree/rel/aspnet-2.0) for a library that uses `IHttpModule` to work with .Net Framework 4.7.2+ apps.*
 
@@ -10,9 +10,9 @@ This library is for ASP.Net applications (ASP.Net 5.0+) and [Shibboleth](https:/
 - Shibboleth authentication itself is handled by IIS/Apache.  This library merely consumes Shibboleth data after authentication has taken place.
 
 ### Compatibility
-- ASP.Net Core 5.0+
+- ASP.Net 3.1/5/6+
 - IIS7+ (ISAPI or IIS7 Shibboleth DLL)
-- Apache (Front-end proxy for ASP.Net 5.0+)
+- Apache (Front-end proxy for ASP.Net 3.1/5/6+)
 
 _This documentation does NOT cover Shibboleth setup for IIS/Apache.  Please refer to [UW-Madison documentation](https://kb.wisc.edu/86317) for that information._
 
@@ -94,4 +94,4 @@ Add the `AddDevAuthentication()` method onto the `IAuthenticationBuilder`.  You 
 ------------
 
 There is a sample project available in the source solution to show how this works in its entirety.
- - **SampleMVCCore** .Net 5.0 app using the `IAuthenticationBuilder` extensions for both local development and Shibboleth production
+ - **SampleMVCCore** .Net 6.0 app using the `IAuthenticationBuilder` extensions for both local development and Shibboleth production
