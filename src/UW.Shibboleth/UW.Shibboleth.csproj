@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
@@ -10,8 +10,8 @@
     <Company>AAE IT Services Center</Company>
     <PackageLicenseUrl></PackageLicenseUrl>
     <PackageLicenseFile>license.txt</PackageLicenseFile>
-    <RepositoryUrl>https://git.aae.wisc.edu/lib/uw.authentication.shibboleth.git</RepositoryUrl>
-    <PackageProjectUrl>https://git.aae.wisc.edu/lib/uw.authentication.shibboleth</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/uw-madison-aae/uw.authentication.shibboleth.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/uw-madison-aae/uw.authentication.shibboleth</PackageProjectUrl>
     <Description>Common objects used in building identities and principals from the University of Wisconsin - Madison Shibboleth implementation.</Description>
     <RepositoryType>git</RepositoryType>
     <AssemblyVersion>5.0.0.0</AssemblyVersion>
