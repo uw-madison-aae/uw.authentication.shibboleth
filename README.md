@@ -50,6 +50,59 @@ Headers must be forwarded from the Apache Reverse Proxy into the ASP.Net app run
 		RequestHeader set wiscEduPVI %{wiscEduPVI}e
 		RequestHeader set ShibSessionIndex %{ShibSessionIndex}e
 
+## Shibboleth Attributes
+
+By default, the following Shibboleth attributes are added as `Claim`s to the `HttpContext.User.Identity`.
+| Shibboleth Attribute | Claim Type                                                                      | UWShibbolethClaimsType | Notes                                                                                |
+|----------------------|---------------------------------------------------------------------------------|------------------------|--------------------------------------------------------------------------------------|
+| givenName            | http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname                 | FIRSTNAME              | Not a default attribute, must be released by DoIT IAM per app                        |
+| sn                   | http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname                   | LASTNAME               | Not a default attribute, must be released by DoIT IAM per app                        |
+| wiscEduPVI           | http://schemas.xmlsoap.org/ws/2005/05/identity/claims/privatepersonalidentifier | PVI                    |                                                                                      |
+| uid                  | http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name                      | UID                    | Changed to lowercase                                                                 |
+| eppn                 | http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn                       | EPPN                   |                                                                                      |
+| mail                 | http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress              | MAIL                   | Changed to lowercase.  Not a default attribute, must be released by DoIT IAM per app |
+| isMemberOf           | http://schemas.xmlsoap.org/claims/Group                                         | Group                  | Split by semicolon (;) into individual claims for each group                         |
+
+Additional Shibboleth attributes can be added to the processing.   
+
+***Please note: Any additional attributes must be explicitly released per-app by DoIT IAM***
+
+Shibboleth attributes are mapped to Claims using one of the following: `ClaimActions.MapAttribute`, `ClaimActions.MapCustomAttribute`, and `ClaimActions.MapCustomMultiValueAttribute` within the `ShibbolethAuthenticationOptions` class.   Examples
+
+```csharp
+//authentication with Shibboleth
+services.AddAuthentication(options =>
+{
+    options.DefaultScheme = ShibbolethAuthenticationDefaults.AuthenticationScheme;
+    // define the options Action<> to add additional attribute to claim mappings
+}).AddUWShibboleth(options =>
+{
+    
+
+    // these examples are to illustrate the use of ClaimActions - these specific examples do not need 
+    //to be implemented, as they are already
+    // done so by the default configuration.
+
+    // straight value to claim mapping
+    options.ClaimActions.MapAttribute(UWShibbolethClaimsType.FIRSTNAME, "givenName");
+    options.ClaimActions.MapAttribute("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname", "sn");
+
+    // value to claim mapping that requires additional processing
+    options.ClaimActions.MapCustomAttribute(UWShibbolethClaimsType.UID, "uid", value =>
+    {
+        return value.ToLower();
+    });
+
+    // single value will be parsed to multiple claim values
+    options.ClaimActions.MapCustomMultiValueAttribute(UWShibbolethClaimsType.Group, "isMemberOf", value =>
+    {
+        return value.Split(';').ToList();
+    });
+
+});
+
+```
+
 ------------
 
 ## Development
