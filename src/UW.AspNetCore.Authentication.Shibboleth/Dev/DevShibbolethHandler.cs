@@ -7,9 +7,9 @@ using UW.Shibboleth;
 
 namespace UW.AspNetCore.Authentication
 {
-    public class DevShibbolethAuthenticationHandler : DevAuthenticationHandler
+    public class DevShibbolethHandler : DevAuthenticationHandler
     {
-        public DevShibbolethAuthenticationHandler(IOptionsMonitor<DevAuthenticationOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock)
+        public DevShibbolethHandler(IOptionsMonitor<DevAuthenticationOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock)
             : base(options, logger, encoder, clock)
         {
 

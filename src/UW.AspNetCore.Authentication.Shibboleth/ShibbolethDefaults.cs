@@ -3,7 +3,7 @@
     /// <summary>
     /// Default values for Shibboleth authentication middleware
     /// </summary>
-    public static class ShibbolethAuthenticationDefaults
+    public static class ShibbolethDefaults
     {
         /// <summary>
         /// Default value for <see cref="AuthenticationScheme.Name"/>.

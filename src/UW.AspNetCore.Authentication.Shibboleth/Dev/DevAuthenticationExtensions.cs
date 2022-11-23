@@ -26,14 +26,14 @@ namespace UW.AspNetCore.Authentication
             => builder.AddDevShibbolethAuthentication(options => { options.FakeUserVariables = fake_variables; });
 
         public static AuthenticationBuilder AddDevShibbolethAuthentication(this AuthenticationBuilder builder, Action<DevAuthenticationOptions> configureOptions)
-            => builder.AddDevShibbolethAuthentication(ShibbolethAuthenticationDefaults.AuthenticationScheme, configureOptions);
+            => builder.AddDevShibbolethAuthentication(ShibbolethDefaults.AuthenticationScheme, configureOptions);
 
         public static AuthenticationBuilder AddDevShibbolethAuthentication(this AuthenticationBuilder builder, string authenticationScheme, Action<DevAuthenticationOptions> configureOptions)
-            => builder.AddDevShibbolethAuthentication(authenticationScheme, displayName: ShibbolethAuthenticationDefaults.DisplayName, configureOptions: configureOptions);
+            => builder.AddDevShibbolethAuthentication(authenticationScheme, displayName: ShibbolethDefaults.DisplayName, configureOptions: configureOptions);
 
         public static AuthenticationBuilder AddDevShibbolethAuthentication(this AuthenticationBuilder builder, string authenticationScheme, string displayName, Action<DevAuthenticationOptions> configureOptions)
         {
-            return builder.AddScheme<DevAuthenticationOptions, DevShibbolethAuthenticationHandler>(authenticationScheme, displayName, configureOptions);
+            return builder.AddScheme<DevAuthenticationOptions, DevShibbolethHandler>(authenticationScheme, displayName, configureOptions);
         }
     }
 }

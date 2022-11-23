@@ -8,12 +8,12 @@ namespace UW.AspNetCore.Authentication
     /// <summary>
     /// Contains information about the login session as well as the user <see cref="System.Security.Claims.ClaimsIdentity"/>.
     /// </summary>
-    public class ShibbolethCreatingTicketContext : ResultContext<ShibbolethAuthenticationOptions>
+    public class ShibbolethCreatingTicketContext : ResultContext<ShibbolethOptions>
     {
         public ShibbolethCreatingTicketContext(
             HttpContext context,
             AuthenticationScheme scheme,
-            ShibbolethAuthenticationOptions options,
+            ShibbolethOptions options,
             ClaimsPrincipal principal,
             AuthenticationProperties properties,
             ShibbolethAttributeValueCollection userData

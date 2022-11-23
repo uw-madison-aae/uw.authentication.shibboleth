@@ -22,7 +22,7 @@ namespace UW.AspNetCore.Authentication
         /// <summary>
         /// Gets or sets the delegate that is invoked when the ApplyRedirect method is invoked.
         /// </summary>
-        public Func<RedirectContext<ShibbolethAuthenticationOptions>, Task> OnRedirectToAuthorizationEndpoint { get; set; } = context =>
+        public Func<RedirectContext<ShibbolethOptions>, Task> OnRedirectToAuthorizationEndpoint { get; set; } = context =>
         {
             context.Response.Redirect(context.RedirectUri);
             return Task.CompletedTask;
@@ -39,7 +39,7 @@ namespace UW.AspNetCore.Authentication
         /// Called when a Challenge causes a redirect to authorize endpoint in the Twitter handler
         /// </summary>
         /// <param name="context">Contains redirect URI and <see cref="AuthenticationProperties"/> of the challenge </param>
-        public virtual Task RedirectToAuthorizationEndpoint(RedirectContext<ShibbolethAuthenticationOptions> context) => OnRedirectToAuthorizationEndpoint(context);
+        public virtual Task RedirectToAuthorizationEndpoint(RedirectContext<ShibbolethOptions> context) => OnRedirectToAuthorizationEndpoint(context);
 
         public virtual Task AuthenticationFailed(ShibbolethFailedContext context) => OnAuthenticationFailed(context);
     }
