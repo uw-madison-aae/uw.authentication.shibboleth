@@ -17,7 +17,7 @@ namespace UW.AspNetCore.Authentication
         /// <summary>
         /// Gets or sets the function that is invoked when the Authenticated method is invoked.
         /// </summary>
-        public Func<ShibbolethCreatingTicketingContext, Task> OnCreatingTicket { get; set; } = context => Task.CompletedTask;
+        public Func<ShibbolethCreatingTicketContext, Task> OnCreatingTicket { get; set; } = context => Task.CompletedTask;
 
         /// <summary>
         /// Gets or sets the delegate that is invoked when the ApplyRedirect method is invoked.
@@ -33,7 +33,7 @@ namespace UW.AspNetCore.Authentication
         /// </summary>
         /// <param name="context">Contains information about the login session as well as the user <see cref="System.Security.Claims.ClaimsIdentity"/>.</param>
         /// <returns>A <see cref="Task"/> representing the completed operation.</returns>
-        public virtual Task CreatingTicket(ShibbolethCreatingTicketingContext context) => OnCreatingTicket(context);
+        public virtual Task CreatingTicket(ShibbolethCreatingTicketContext context) => OnCreatingTicket(context);
 
         /// <summary>
         /// Called when a Challenge causes a redirect to authorize endpoint in the Twitter handler
