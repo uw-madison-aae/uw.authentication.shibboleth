@@ -31,7 +31,7 @@ namespace UW.AspNetCore.Authentication
         protected override Task<object> CreateEventsAsync() => Task.FromResult<object>(new ShibbolethEvents());
 
         /// <inheritdoc />
-        protected override Task<AuthenticateResult> HandleAuthenticateAsync()
+        protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
             try
             {
@@ -53,16 +53,14 @@ namespace UW.AspNetCore.Authentication
                     {
                         // no Shibboleth sessions in header or variable mode.  Not authenticated.
                         // no result, as authentication may be handled by something else later
-                        return Task.FromResult(AuthenticateResult.NoResult());
+                        return AuthenticateResult.NoResult();
                     }
                 }
 
-                return Task.FromResult(
-                     AuthenticateResult.Success(
-                        new AuthenticationTicket(
-                            CreateClaimsPrincipal(shibbolethProcessor.GetAttributesFromRequest()),
-                            new AuthenticationProperties(),
-                            Scheme.Name)));
+                var identity = new ClaimsIdentity(ClaimsIssuer);
+                var userData = shibbolethProcessor.GetAttributesFromRequest();
+
+                return AuthenticateResult.Success(await CreateTicketAsync(identity, new AuthenticationProperties(), userData))
 
             } //end outer try
             catch (Exception ex)
@@ -74,10 +72,10 @@ namespace UW.AspNetCore.Authentication
                     Exception = ex
                 };
 
-                Events.AuthenticationFailed(authenticationFailedContext);
+                await Events.AuthenticationFailed(authenticationFailedContext);
                 if (authenticationFailedContext.Result != null)
                 {
-                    return Task.FromResult(authenticationFailedContext.Result);
+                    return authenticationFailedContext.Result;
                 }
 
                 throw;
@@ -86,34 +84,26 @@ namespace UW.AspNetCore.Authentication
 
         }
 
-        protected override Task HandleChallengeAsync(AuthenticationProperties properties)
+        protected virtual async Task<AuthenticationTicket> CreateTicketAsync(
+            ClaimsIdentity identity, AuthenticationProperties properties, ShibbolethAttributeValueCollection userData)
         {
-            properties.RedirectUri
-            return base.HandleChallengeAsync(properties);
-        }
-
-        /// <summary>
-        /// Creates a <see cref="ClaimsIdentity"/> using the minimum Shibboleth attributes
-        /// </summary>
-        /// <param name="userData"></param>
-        /// <returns></returns>
-        public virtual ClaimsPrincipal CreateClaimsPrincipal(ShibbolethAttributeValueCollection userData)
-        {
-            var identity = new ClaimsIdentity(Scheme.Name);
-
             // examine the specified user data, determine if requisite data is present, and optionally add it
-            foreach(var action in Options.ClaimActions)
+            foreach (var action in Options.ClaimActions)
             {
                 action.Run(userData, identity, Options.ClaimsIssuer ?? Scheme.Name);
             }
 
-            return new ClaimsPrincipal(identity);
+            var context = new ShibbolethCreatingTicketContext(Context, Scheme, Options, new ClaimsPrincipal(identity), properties, userData);
+            await Events.CreatingTicket(context);
+
+            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+
         }
 
         /// <summary>
         /// Returns the attribute mapping from the XML stored in UW.Shibboleth
         /// </summary>
-        public IList<IShibbolethAttribute> GetShibbolethAttributes()
+        public virtual IList<IShibbolethAttribute> GetShibbolethAttributes()
         {
             return ShibbolethDefaultAttributes.GetAttributeMapping();
 
