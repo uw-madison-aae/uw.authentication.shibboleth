@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using System.Linq;
 using UW.Shibboleth;
 
@@ -40,10 +41,10 @@ namespace UW.AspNetCore.Authentication
         public ShibbolethClaimActionCollection ClaimActions { get; } = new ShibbolethClaimActionCollection();
 
         /// <summary>
-        /// Gets or sets the challenge url used to populate a ticket with Shibboleth session information
+        /// The challenge path within the application's pase bath where the ticket will be populated with Shibboleth session information
         /// </summary>
         /// <value>Local url that is secured with Shibboleth</value>
-        public string ChallengeUrl { get; set; }
+        public PathString ChallengePath { get; set; }
 
         /// <summary>
         /// Gets or sets whether a challenge that is initiated should be processed

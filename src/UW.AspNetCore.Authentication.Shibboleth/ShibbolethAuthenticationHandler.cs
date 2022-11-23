@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
@@ -60,7 +61,7 @@ namespace UW.AspNetCore.Authentication
                 var identity = new ClaimsIdentity(ClaimsIssuer);
                 var userData = shibbolethProcessor.GetAttributesFromRequest();
 
-                return AuthenticateResult.Success(await CreateTicketAsync(identity, new AuthenticationProperties(), userData))
+                return AuthenticateResult.Success(await CreateTicketAsync(identity, new AuthenticationProperties(), userData));
 
             } //end outer try
             catch (Exception ex)
@@ -97,6 +98,21 @@ namespace UW.AspNetCore.Authentication
             await Events.CreatingTicket(context);
 
             return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+
+        }
+
+        protected override Task HandleChallengeAsync(AuthenticationProperties properties)
+        {
+            if (!Options.ProcessChallenge || !Options.ChallengePath.HasValue)
+            {
+                return base.HandleChallengeAsync(properties);
+                
+            }
+
+            var redirectUri = OriginalPathBase + Options.ChallengePath;
+
+            var redirectContext = new RedirectContext<ShibbolethAuthenticationOptions>(Context, Scheme, Options, properties, redirectUri);
+            return Events.RedirectToAuthorizationEndpoint(redirectContext);
 
         }
 
