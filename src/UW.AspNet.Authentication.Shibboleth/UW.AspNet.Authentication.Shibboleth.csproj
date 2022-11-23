@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFramework>net462</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>UW.Authentication.AspNet.snk</AssemblyOriginatorKeyFile>
@@ -9,10 +9,11 @@
     <Description>Library used to handle UW's Shibboleth authentication in ASP.NET web applications.</Description>
     <Company>AAE IT Services Center</Company>
     <Authors>Eric Dieckman</Authors>
-    <Version>2.0.0</Version>
+    <Version>3.0.0</Version>
     <PackageLicenseFile>license.txt</PackageLicenseFile>
-    <PackageProjectUrl>https://git.aae.wisc.edu/lib/uw.authentication.shibboleth/-/tree/rel/aspnet-2.0</PackageProjectUrl>
-    <RepositoryUrl>https://git.aae.wisc.edu/lib/uw.authentication.shibboleth.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/uw-madison-aae/uw.authentication.shibboleth/tree/rel/aspnet-2.0</PackageProjectUrl>
+	  <PackageReleaseNotes>Minimum framework 4.6.2.  Minimum Shibboleth 6.0.</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/uw-madison-aae/uw.authentication.shibboleth.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
@@ -24,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UW.Shibboleth\UW.Shibboleth.csproj" />
+    <PackageReference Include="UW.Shibboleth" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>

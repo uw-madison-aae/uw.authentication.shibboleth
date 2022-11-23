@@ -59,11 +59,11 @@ namespace UW.AspNet.Authentication
             // https://wiki.shibboleth.net/confluence/display/SP3/AttributeAccess#AttributeAccess-ServerVariables
 
             // must be done with the NameValueCollection because Shibboleth Server Variables don't show up in the AllKeys
-            if (request.ServerVariables.GetValues(ShibbolethAuthenticationDefaults.VariableShibIndexName) != null)
+            if (request.ServerVariables.GetValues(ShibbolethDefaults.VariableShibIndexName) != null)
                 return ShibbolethSessionType.Variable;
 
             // nothing found in the server variables.  Now check for a session in the headers
-            if (request.Headers.GetValues(ShibbolethAuthenticationDefaults.HeaderShibIndexName) != null)
+            if (request.Headers.GetValues(ShibbolethDefaults.HeaderShibIndexName) != null)
                 return ShibbolethSessionType.Header;
 
             // nothing found - no Shibboleth session
@@ -89,8 +89,8 @@ namespace UW.AspNet.Authentication
         public virtual ClaimsPrincipal CreateClaimsPrincipal(ShibbolethAttributeValueCollection userData)
         {
 
-            var schemeName = ShibbolethAuthenticationDefaults.AuthenticationScheme;
-            var claimsIssuer = ShibbolethAuthenticationDefaults.Issuer;
+            var schemeName = ShibbolethDefaults.AuthenticationScheme;
+            var claimsIssuer = ShibbolethDefaults.Issuer;
 
             var identity = new ClaimsIdentity(schemeName);
 
