@@ -29,7 +29,7 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\UW.Shibboleth\UW.Shibboleth.csproj" />
+    <PackageReference Include="UW.Shibboleth" Version="6.0.1" />
   </ItemGroup>
 
 

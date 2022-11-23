@@ -51,6 +51,8 @@ namespace UW.AspNetCore.Authentication
         /// </summary>
         /// <remarks>If false, will produce a 401 Status Code for challenge</remarks>
         public bool ProcessChallenge { get; set; } = false;
+
+        public IShibbolethAttributeCollection ShibbolethAttributes { get; set; } = ShibbolethAttributeCollection.DefaultUWAttributes;
     }
 
 }

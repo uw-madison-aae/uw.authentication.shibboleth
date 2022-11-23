@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -38,19 +36,19 @@ namespace UW.AspNetCore.Authentication
             {
 
                 IShibbolethProcessor shibbolethProcessor;
-                var shibbolethAttributes = GetShibbolethAttributes();
+                var shibbolethAttributes = Options.ShibbolethAttributes;
 
                 // check for variables first.  This is the preferred method when using IIS7 and considered more secure
                 // https://wiki.shibboleth.net/confluence/display/SP3/AttributeAccess#AttributeAccess-ServerVariables
-                shibbolethProcessor = new ShibbolethVariableProcessor(Context, shibbolethAttributes);
+                shibbolethProcessor = new ShibbolethVariableProcessor(shibbolethAttributes);
 
                 // is Shibboleth enabled and in variable mode?
-                if (!shibbolethProcessor.IsShibbolethSession())
+                if (!shibbolethProcessor.IsShibbolethSession(Context))
                 {
                     // Shibboleth isn't enabled, or is in header mode.  Check header mode
-                    shibbolethProcessor = new ShibbolethHeaderProcessor(Context, shibbolethAttributes);
+                    shibbolethProcessor = new ShibbolethHeaderProcessor(shibbolethAttributes);
 
-                    if (!shibbolethProcessor.IsShibbolethSession())
+                    if (!shibbolethProcessor.IsShibbolethSession(Context))
                     {
                         // no Shibboleth sessions in header or variable mode.  Not authenticated.
                         // no result, as authentication may be handled by something else later
@@ -59,7 +57,7 @@ namespace UW.AspNetCore.Authentication
                 }
 
                 var identity = new ClaimsIdentity(ClaimsIssuer);
-                var userData = shibbolethProcessor.GetAttributesFromRequest();
+                var userData = shibbolethProcessor.ExtractAttributeValues(Context);
 
                 return AuthenticateResult.Success(await CreateTicketAsync(identity, new AuthenticationProperties(), userData));
 
@@ -113,15 +111,6 @@ namespace UW.AspNetCore.Authentication
 
             var redirectContext = new RedirectContext<ShibbolethOptions>(Context, Scheme, Options, properties, redirectUri);
             return Events.RedirectToAuthorizationEndpoint(redirectContext);
-
-        }
-
-        /// <summary>
-        /// Returns the attribute mapping from the XML stored in UW.Shibboleth
-        /// </summary>
-        public virtual IList<IShibbolethAttribute> GetShibbolethAttributes()
-        {
-            return ShibbolethDefaultAttributes.GetAttributeMapping();
 
         }
 

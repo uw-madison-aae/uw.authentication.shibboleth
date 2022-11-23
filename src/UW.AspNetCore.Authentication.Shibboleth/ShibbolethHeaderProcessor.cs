@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
-using System.Collections.Generic;
-using System.Linq;
 using UW.Shibboleth;
 
 namespace UW.AspNetCore.Authentication
@@ -11,23 +9,21 @@ namespace UW.AspNetCore.Authentication
     /// </summary>
     public class ShibbolethHeaderProcessor : IShibbolethProcessor
     {
-        protected HttpContext Context { get; }
 
         /// <summary>
         /// Shibboleth attribute ids from the IDP
         /// </summary>
         protected IShibbolethAttributeCollection Attributes { get; }
 
-        public ShibbolethHeaderProcessor(HttpContext httpContext, IShibbolethAttributeCollection attributes)
+        public ShibbolethHeaderProcessor(IShibbolethAttributeCollection attributes)
         {
-            Context = httpContext;
             Attributes = attributes;
         }
 
-        public bool IsShibbolethSession()
+        public bool IsShibbolethSession(HttpContext context)
         {
             // look for the presence of the ShibSessionIndex - indicates a Shibboleth session in effect
-            if (Context.Request.Headers.TryGetValue(ShibbolethDefaults.HeaderShibIndexName, out StringValues shib_index))
+            if (context.Request.Headers.TryGetValue(ShibbolethDefaults.HeaderShibIndexName, out StringValues shib_index))
             {
                 return !StringValues.IsNullOrEmpty(shib_index);
             }
@@ -35,9 +31,14 @@ namespace UW.AspNetCore.Authentication
             return false;
         }
 
-        public ShibbolethAttributeValueCollection GetAttributesFromRequest()
+        /// <summary>
+        /// Extracts Shibboleth attributes from a Shibboleth session context of request headers
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public ShibbolethAttributeValueCollection ExtractAttributeValues(HttpContext context)
         {
-            var headers = Context.Request.Headers;
+            var headers = context.Request.Headers;
 
             var attributeValues = new ShibbolethAttributeValueCollection();
 

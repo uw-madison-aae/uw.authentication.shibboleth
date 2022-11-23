@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.PortableExecutable;
 using UW.Shibboleth;
 namespace UW.AspNetCore.Authentication
 {
@@ -10,36 +8,34 @@ namespace UW.AspNetCore.Authentication
     /// </summary>
     public class ShibbolethVariableProcessor : IShibbolethProcessor
     {
-        protected HttpContext Context { get; }
-
         /// <summary>
         /// Shibboleth attribute ids from the IDP
         /// </summary>
         protected IShibbolethAttributeCollection Attributes { get; }
 
-        public ShibbolethVariableProcessor(HttpContext httpContext, IShibbolethAttributeCollection attributes)
+        public ShibbolethVariableProcessor(IShibbolethAttributeCollection attributes)
         {
-            Context = httpContext;
             Attributes = attributes;
         }
 
-        public bool IsShibbolethSession()
+        public bool IsShibbolethSession(HttpContext context)
         {
             // look for the presence of the Shib-Session-Index - indicates a Shibboleth session in effect
-            return !string.IsNullOrEmpty(Context.GetServerVariable(ShibbolethDefaults.VariableShibIndexName));
+            return !string.IsNullOrEmpty(context.GetServerVariable(ShibbolethDefaults.VariableShibIndexName));
         }
 
         /// <summary>
         /// Extracts Shibboleth attributes from a Shibboleth session context of server variables
         /// </summary>
+        /// <param name="context"></param>
         /// <returns>An <see cref="IDictionary{String,String}"/> for attributes and values</returns>
-        public ShibbolethAttributeValueCollection GetAttributesFromRequest()
+        public ShibbolethAttributeValueCollection ExtractAttributeValues(HttpContext context)
         {
             var attributeValues = new ShibbolethAttributeValueCollection();
 
             foreach (var attribute in Attributes)
             {
-                var value = Context.GetServerVariable(attribute);
+                var value = context.GetServerVariable(attribute);
                 if (!string.IsNullOrEmpty(value))
                 {
                     attributeValues.Add(new ShibbolethAttributeValue(attribute, value));

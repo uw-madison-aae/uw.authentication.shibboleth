@@ -12,13 +12,25 @@ namespace UW.Shibboleth
         {
         }
 
-        public ShibbolethAttributeValueCollection(ShibbolethAttributeValueCollection existing_collection) : base(existing_collection)
+        public ShibbolethAttributeValueCollection(IDictionary<string, string> collection)
+        {
+            var attributeCollection = new Dictionary<string, ShibbolethAttributeValue>();
+            foreach(var keyValuePair in collection)
+            {
+                attributeCollection.Add(keyValuePair.Key, new ShibbolethAttributeValue(keyValuePair.Key, keyValuePair.Value));
+            }
+
+            this(attributeCollection);
+        }
+
+        public ShibbolethAttributeValueCollection(ShibbolethAttributeValueCollection collection) : base(collection)
         {
 
         }
 
         public ShibbolethAttributeValueCollection(IDictionary<string, ShibbolethAttributeValue> collection) : base(collection)
         {
+
         }
 
         public void Add(ShibbolethAttributeValue attributeValue)
