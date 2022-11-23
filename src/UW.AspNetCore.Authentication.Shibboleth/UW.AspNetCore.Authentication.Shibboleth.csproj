@@ -6,10 +6,11 @@
     <Company>AAE IT Services Center</Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Library for handling UW's Shibboleth authentication in ASP.Net web applications</Description>
-    <RepositoryUrl>https://git.aae.wisc.edu/lib/uw.authentication.shibboleth.git</RepositoryUrl>
+    <RepositoryUrl>https://github.com/uw-madison-aae/uw.authentication.shibboleth.git</RepositoryUrl>
     <Version>6.1.0-beta1</Version>
     <RootNamespace>UW.AspNetCore.Authentication</RootNamespace>
-    <PackageProjectUrl>https://git.aae.wisc.edu/lib/uw.authentication.shibboleth</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/uw-madison-aae/uw.authentication.shibboleth</PackageProjectUrl>
+	  <PackageReleaseNotes></PackageReleaseNotes>
     <PackageLicenseFile>license.txt</PackageLicenseFile>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
@@ -28,7 +29,9 @@
 
 
   <ItemGroup>
-    <PackageReference Include="UW.Shibboleth" Version="5.0.0" />
+    <ProjectReference Include="..\UW.Shibboleth\UW.Shibboleth.csproj" />
   </ItemGroup>
+
+
 
 </Project>

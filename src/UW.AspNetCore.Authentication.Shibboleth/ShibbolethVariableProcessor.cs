@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using UW.Shibboleth;
 namespace UW.AspNetCore.Authentication
 {
@@ -12,11 +13,11 @@ namespace UW.AspNetCore.Authentication
         protected HttpContext Context { get; }
 
         /// <summary>
-        /// Shibboleth attribute ids and names from UW Shibboleth IdP
+        /// Shibboleth attribute ids from the IDP
         /// </summary>
-        protected IList<IShibbolethAttribute> Attributes { get; }
+        protected IShibbolethAttributeCollection Attributes { get; }
 
-        public ShibbolethVariableProcessor(HttpContext httpContext, IList<IShibbolethAttribute> attributes)
+        public ShibbolethVariableProcessor(HttpContext httpContext, IShibbolethAttributeCollection attributes)
         {
             Context = httpContext;
             Attributes = attributes;
@@ -34,18 +35,18 @@ namespace UW.AspNetCore.Authentication
         /// <returns>An <see cref="IDictionary{String,String}"/> for attributes and values</returns>
         public ShibbolethAttributeValueCollection GetAttributesFromRequest()
         {
-            var ret_dict = new ShibbolethAttributeValueCollection();
-            var distinct_ids = Attributes.GroupBy(a => a.Id).Select(a => a.First());
-            foreach (var attrib in distinct_ids)
+            var attributeValues = new ShibbolethAttributeValueCollection();
+
+            foreach (var attribute in Attributes)
             {
-                var value = Context.GetServerVariable(attrib.Id);
+                var value = Context.GetServerVariable(attribute);
                 if (!string.IsNullOrEmpty(value))
                 {
-                    ret_dict.Add(new ShibbolethAttributeValue(attrib.Id, value));
+                    attributeValues.Add(new ShibbolethAttributeValue(attribute, value));
                 }
             }
 
-            return ret_dict;
+            return attributeValues;
         }
     }
 }

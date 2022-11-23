@@ -43,7 +43,7 @@ namespace UW.Shibboleth
         }
 
         protected static string GetValue(ShibbolethAttributeValueCollection userData, string attributeName) {
-            if (!userData.ContainsId(attributeName))
+            if (!userData.ContainsAttribute(attributeName))
                 return null;
 
             if (!userData.ValueIsNullOrEmpty(attributeName))
