@@ -86,6 +86,12 @@ namespace UW.AspNetCore.Authentication
 
         }
 
+        protected override Task HandleChallengeAsync(AuthenticationProperties properties)
+        {
+            properties.RedirectUri
+            return base.HandleChallengeAsync(properties);
+        }
+
         /// <summary>
         /// Creates a <see cref="ClaimsIdentity"/> using the minimum Shibboleth attributes
         /// </summary>
