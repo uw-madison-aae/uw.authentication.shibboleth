@@ -3,7 +3,7 @@ using UW.Shibboleth;
 
 namespace UW.AspNetCore.Authentication
 {
-    public interface IShibbolethAuthenticationProcessor
+    public interface IShibbolethProcessor
     {
         /// <summary>
         /// Extracts Shibboleth attributes from a Shibboleth session collection of headers/variables

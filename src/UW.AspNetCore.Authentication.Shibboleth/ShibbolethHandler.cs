@@ -11,9 +11,9 @@ using UW.Shibboleth;
 
 namespace UW.AspNetCore.Authentication
 {
-    public class ShibbolethAuthenticationHandler : AuthenticationHandler<ShibbolethAuthenticationOptions>
+    public class ShibbolethHandler : AuthenticationHandler<ShibbolethOptions>
     {
-        public ShibbolethAuthenticationHandler(IOptionsMonitor<ShibbolethAuthenticationOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock)
+        public ShibbolethHandler(IOptionsMonitor<ShibbolethOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock)
             : base(options, logger, encoder, clock)
         {
 
@@ -37,18 +37,18 @@ namespace UW.AspNetCore.Authentication
             try
             {
 
-                IShibbolethAuthenticationProcessor shibbolethProcessor;
+                IShibbolethProcessor shibbolethProcessor;
                 var shibbolethAttributes = GetShibbolethAttributes();
 
                 // check for variables first.  This is the preferred method when using IIS7 and considered more secure
                 // https://wiki.shibboleth.net/confluence/display/SP3/AttributeAccess#AttributeAccess-ServerVariables
-                shibbolethProcessor = new ShibbolethAuthenticationVariableProcessor(Context, shibbolethAttributes);
+                shibbolethProcessor = new ShibbolethVariableProcessor(Context, shibbolethAttributes);
 
                 // is Shibboleth enabled and in variable mode?
                 if (!shibbolethProcessor.IsShibbolethSession())
                 {
                     // Shibboleth isn't enabled, or is in header mode.  Check header mode
-                    shibbolethProcessor = new ShibbolethAuthenticationHeaderProcessor(Context, shibbolethAttributes);
+                    shibbolethProcessor = new ShibbolethHeaderProcessor(Context, shibbolethAttributes);
 
                     if (!shibbolethProcessor.IsShibbolethSession())
                     {
@@ -111,7 +111,7 @@ namespace UW.AspNetCore.Authentication
 
             var redirectUri = OriginalPathBase + Options.ChallengePath;
 
-            var redirectContext = new RedirectContext<ShibbolethAuthenticationOptions>(Context, Scheme, Options, properties, redirectUri);
+            var redirectContext = new RedirectContext<ShibbolethOptions>(Context, Scheme, Options, properties, redirectUri);
             return Events.RedirectToAuthorizationEndpoint(redirectContext);
 
         }

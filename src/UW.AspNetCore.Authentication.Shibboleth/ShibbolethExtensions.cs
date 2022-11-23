@@ -8,21 +8,21 @@ namespace UW.AspNetCore.Authentication
     /// <summary>
     /// Extension methods to add Shibboleth authentication capabilities to an HTTP application pipeline
     /// </summary>
-    public static class ShibbolethAuthenticationExtensions
+    public static class ShibbolethExtensions
     {
         /// <summary>
-        /// Adds <see cref="ShibbolethAuthenticationDefaults"/> to the specified
+        /// Adds <see cref="ShibbolethDefaults"/> to the specified
         /// <see cref="AuthenticationBuilder"/>, which enables UW Shibboleth authentication capabilities.
         /// </summary>
         /// <param name="builder">The authentication builder.</param>
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddUWShibboleth([NotNull] this AuthenticationBuilder builder)
         {
-            return builder.AddUWShibboleth(ShibbolethAuthenticationDefaults.AuthenticationScheme, options => { });
+            return builder.AddUWShibboleth(ShibbolethDefaults.AuthenticationScheme, options => { });
         }
 
         /// <summary>
-        /// Adds <see cref="ShibbolethAuthenticationDefaults"/> to the specified
+        /// Adds <see cref="ShibbolethDefaults"/> to the specified
         /// <see cref="AuthenticationBuilder"/>, which enables UW Shibboleth authentication capabilities.
         /// </summary>
         /// <param name="builder">The authentication builder.</param>
@@ -30,13 +30,13 @@ namespace UW.AspNetCore.Authentication
         /// <returns>The <see cref="AuthenticationBuilder"/>.</returns>
         public static AuthenticationBuilder AddUWShibboleth(
             [NotNull] this AuthenticationBuilder builder,
-            [NotNull] Action<ShibbolethAuthenticationOptions> configuration)
+            [NotNull] Action<ShibbolethOptions> configuration)
         {
-            return builder.AddUWShibboleth(ShibbolethAuthenticationDefaults.AuthenticationScheme, configuration);
+            return builder.AddUWShibboleth(ShibbolethDefaults.AuthenticationScheme, configuration);
         }
 
         /// <summary>
-        /// Adds <see cref="ShibbolethAuthenticationHandler"/> to the specified
+        /// Adds <see cref="ShibbolethHandler"/> to the specified
         /// <see cref="AuthenticationBuilder"/>, which enables UW Shibboleth authentication capabilities.
         /// </summary>
         /// <param name="builder">The authentication builder.</param>
@@ -46,13 +46,13 @@ namespace UW.AspNetCore.Authentication
         public static AuthenticationBuilder AddUWShibboleth(
             [NotNull] this AuthenticationBuilder builder,
             [NotNull] string scheme,
-            [NotNull] Action<ShibbolethAuthenticationOptions> configuration)
+            [NotNull] Action<ShibbolethOptions> configuration)
         {
-            return builder.AddUWShibboleth(scheme, ShibbolethAuthenticationDefaults.DisplayName, configuration);
+            return builder.AddUWShibboleth(scheme, ShibbolethDefaults.DisplayName, configuration);
         }
 
         /// <summary>
-        /// Add <see cref="ShibbolethAuthenticationHandler"/> to the specified <see cref="AuthenticationBuilder"/>, which enables UW Shibboleth authentication capabilities
+        /// Add <see cref="ShibbolethHandler"/> to the specified <see cref="AuthenticationBuilder"/>, which enables UW Shibboleth authentication capabilities
         /// </summary>
         /// <param name="builder">The authentication builder</param>
         /// <param name="scheme">The authentication scheme associated with this instance.</param>
@@ -63,9 +63,9 @@ namespace UW.AspNetCore.Authentication
             [NotNull] this AuthenticationBuilder builder,
             [NotNull] string scheme,
             string caption,
-            [NotNull] Action<ShibbolethAuthenticationOptions> configuration)
+            [NotNull] Action<ShibbolethOptions> configuration)
         {
-            return builder.AddScheme<ShibbolethAuthenticationOptions, ShibbolethAuthenticationHandler>(scheme, caption, configuration);
+            return builder.AddScheme<ShibbolethOptions, ShibbolethHandler>(scheme, caption, configuration);
         }
     }
 }

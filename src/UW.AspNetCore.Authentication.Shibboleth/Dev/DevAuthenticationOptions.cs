@@ -3,7 +3,7 @@ using System.Security.Claims;
 
 namespace UW.AspNetCore.Authentication
 {
-    public class DevAuthenticationOptions : ShibbolethAuthenticationOptions
+    public class DevAuthenticationOptions : ShibbolethOptions
     {
         public DevAuthenticationOptions() : base()
         {

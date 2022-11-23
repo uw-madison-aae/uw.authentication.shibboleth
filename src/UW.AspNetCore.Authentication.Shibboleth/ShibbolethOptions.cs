@@ -6,13 +6,13 @@ using UW.Shibboleth;
 namespace UW.AspNetCore.Authentication
 {
     /// <summary>
-    /// Configuration options for <see cref="ShibbolethAuthenticationHandler"/>.
+    /// Configuration options for <see cref="ShibbolethHandler"/>.
     /// </summary>
-    public class ShibbolethAuthenticationOptions : AuthenticationSchemeOptions
+    public class ShibbolethOptions : AuthenticationSchemeOptions
     {
-        public ShibbolethAuthenticationOptions()
+        public ShibbolethOptions()
         {
-            ClaimsIssuer = ShibbolethAuthenticationDefaults.Issuer;
+            ClaimsIssuer = ShibbolethDefaults.Issuer;
 
             ClaimActions.MapAttribute(UWShibbolethClaimsType.FIRSTNAME, "givenName");
             ClaimActions.MapAttribute(UWShibbolethClaimsType.LASTNAME, "sn");

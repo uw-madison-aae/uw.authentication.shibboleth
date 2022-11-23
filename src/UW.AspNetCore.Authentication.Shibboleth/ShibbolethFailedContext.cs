@@ -4,12 +4,12 @@ using System;
 
 namespace UW.AspNetCore.Authentication
 {
-    public class ShibbolethFailedContext : ResultContext<ShibbolethAuthenticationOptions>
+    public class ShibbolethFailedContext : ResultContext<ShibbolethOptions>
     {
         public ShibbolethFailedContext(
             HttpContext context,
             AuthenticationScheme scheme,
-            ShibbolethAuthenticationOptions options)
+            ShibbolethOptions options)
             : base(context, scheme, options) { }
 
         public Exception Exception { get; set; }

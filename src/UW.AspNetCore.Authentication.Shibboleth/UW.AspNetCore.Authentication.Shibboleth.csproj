@@ -7,7 +7,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Library for handling UW's Shibboleth authentication in ASP.Net web applications</Description>
     <RepositoryUrl>https://git.aae.wisc.edu/lib/uw.authentication.shibboleth.git</RepositoryUrl>
-    <Version>6.0.0</Version>
+    <Version>6.1.0-beta1</Version>
     <RootNamespace>UW.AspNetCore.Authentication</RootNamespace>
     <PackageProjectUrl>https://git.aae.wisc.edu/lib/uw.authentication.shibboleth</PackageProjectUrl>
     <PackageLicenseFile>license.txt</PackageLicenseFile>
