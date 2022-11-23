@@ -7,11 +7,19 @@ namespace UW.Shibboleth
     /// </summary>
     public class ShibbolethAttributeCollection : HashSet<string>, IShibbolethAttributeCollection
     {
+        public ShibbolethAttributeCollection()
+        {
+
+        }
+        public ShibbolethAttributeCollection(ICollection<string> attributes) : base(attributes) 
+        {
+
+        }
         /// <summary>
         /// Default collection of UW-Madison Shibboleth attributes
         /// </summary>
         /// <remarks>Last updated 11/23/2022</remarks>
-        public static ShibbolethAttributeCollection DefaultUWAttributes = new ShibbolethAttributeCollection([
+        public static ShibbolethAttributeCollection DefaultUWAttributes = new ShibbolethAttributeCollection(new List<string> {
             "mail",
             "mailAlternateAddress",
             "displayName",
@@ -69,7 +77,7 @@ namespace UW.Shibboleth
             "entitlement",
             "assurance",
             "isMemberOf",
-            "eduPersonOrcid"]);
+            "eduPersonOrcid"});
 
     }
 

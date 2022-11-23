@@ -26,7 +26,7 @@ namespace UW.Shibboleth
             Add(attributeValue.Id, attributeValue);
         }
 
-        public KeyCollection Ids
+        public KeyCollection AttributeIds
         {
             get
             {
