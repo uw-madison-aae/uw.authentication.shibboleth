@@ -63,6 +63,7 @@ namespace UW.AspNetCore.Authentication
         {
             get { return (ShibbolethEvents)base.Events; }
             set { base.Events = value; }
+        }
     }
 
 }
