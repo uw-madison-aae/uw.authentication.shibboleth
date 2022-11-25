@@ -38,22 +38,34 @@ namespace UW.AspNetCore.Authentication
                 IShibbolethProcessor shibbolethProcessor;
                 var shibbolethAttributes = Options.ShibbolethAttributes;
 
-                // check for variables first.  This is the preferred method when using IIS7 and considered more secure
-                // https://wiki.shibboleth.net/confluence/display/SP3/AttributeAccess#AttributeAccess-ServerVariables
-                shibbolethProcessor = new ShibbolethVariableProcessor(shibbolethAttributes);
+                // Give the application opportunity to manually select the Shibboleth processor
+                // typically used for development to manually create a Shibboleth session
+                var processorSelectionContext = new ShibbolethProcessorSelectionContext(Context, Scheme, Options);
+                await Events.ShibbolethProcessorSelection(processorSelectionContext);
 
-                // is Shibboleth enabled and in variable mode?
-                if (!shibbolethProcessor.IsShibbolethSession(Context))
+                // if the application retrieved a Shibboleth processor from somewhere else, use that.
+                shibbolethProcessor = processorSelectionContext.Processor;
+
+                if (shibbolethProcessor == null || shibbolethProcessor.IsShibbolethSession(Context)) 
                 {
-                    // Shibboleth isn't enabled, or is in header mode.  Check header mode
-                    shibbolethProcessor = new ShibbolethHeaderProcessor(shibbolethAttributes);
+                    // check for variables first.  This is the preferred method when using IIS7 and considered more secure
+                    // https://wiki.shibboleth.net/confluence/display/SP3/AttributeAccess#AttributeAccess-ServerVariables
+                    shibbolethProcessor = new ShibbolethVariableProcessor(shibbolethAttributes);
 
+                    // is Shibboleth enabled and in variable mode?
                     if (!shibbolethProcessor.IsShibbolethSession(Context))
                     {
-                        // no Shibboleth sessions in header or variable mode.  Not authenticated.
-                        // no result, as authentication may be handled by something else later
-                        return AuthenticateResult.NoResult();
+                        // Shibboleth isn't enabled, or is in header mode.  Check header mode
+                        shibbolethProcessor = new ShibbolethHeaderProcessor(shibbolethAttributes);
+
+                        if (!shibbolethProcessor.IsShibbolethSession(Context))
+                        {
+                            // no Shibboleth sessions in header or variable mode.  Not authenticated.
+                            // no result, as authentication may be handled by something else later
+                            return AuthenticateResult.NoResult();
+                        }
                     }
+
                 }
 
                 var identity = new ClaimsIdentity(ClaimsIssuer);

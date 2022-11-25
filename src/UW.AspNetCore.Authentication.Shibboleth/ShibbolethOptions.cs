@@ -53,6 +53,16 @@ namespace UW.AspNetCore.Authentication
         public bool ProcessChallenge { get; set; } = false;
 
         public IShibbolethAttributeCollection ShibbolethAttributes { get; set; } = ShibbolethAttributeCollection.DefaultUWAttributes;
+
+        /// <summary>
+        /// The object provided by the application to process events raised by the bearer authentication handler.
+        /// The application may implement the interface fully, or it may create an instance of <see cref="ShibbolethEvents"/>
+        /// and assign delegates only to the events it wants to process.
+        /// </summary>
+        public new ShibbolethEvents Events
+        {
+            get { return (ShibbolethEvents)base.Events; }
+            set { base.Events = value; }
     }
 
 }

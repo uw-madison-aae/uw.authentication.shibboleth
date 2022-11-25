@@ -29,14 +29,26 @@ namespace UW.AspNetCore.Authentication
         };
 
         /// <summary>
-        /// Invoked whenever Twitter successfully authenticates a user
+        /// Gets or sets the delegate that is invoked when attribute processor is being selected
+        /// </summary>
+        public Func<ShibbolethProcessorSelectionContext, Task> OnSelectingProcessor { get; set; } = context => Task.CompletedTask;
+
+        /// <summary>
+        /// Invoked whenever a user's Shibboleth information is found  in a session
         /// </summary>
         /// <param name="context">Contains information about the login session as well as the user <see cref="System.Security.Claims.ClaimsIdentity"/>.</param>
         /// <returns>A <see cref="Task"/> representing the completed operation.</returns>
         public virtual Task CreatingTicket(ShibbolethCreatingTicketContext context) => OnCreatingTicket(context);
 
         /// <summary>
-        /// Called when a Challenge causes a redirect to authorize endpoint in the Twitter handler
+        /// Invoked when the attribute processor is being selected
+        /// </summary>
+        /// <param name="context">Contains information about the session</param>
+        /// <returns></returns>
+        public virtual Task ShibbolethProcessorSelection(ShibbolethProcessorSelectionContext context) => OnSelectingProcessor(context);
+
+        /// <summary>
+        /// Called when a Challenge causes a redirect to authorize endpoint in the Shibboleth handler
         /// </summary>
         /// <param name="context">Contains redirect URI and <see cref="AuthenticationProperties"/> of the challenge </param>
         public virtual Task RedirectToAuthorizationEndpoint(RedirectContext<ShibbolethOptions> context) => OnRedirectToAuthorizationEndpoint(context);

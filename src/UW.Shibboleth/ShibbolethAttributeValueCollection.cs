@@ -12,7 +12,7 @@ namespace UW.Shibboleth
         {
         }
 
-        public ShibbolethAttributeValueCollection(IDictionary<string, string> collection)
+        public ShibbolethAttributeValueCollection(IDictionary<string, string> collection) : this()
         {
             var attributeCollection = new Dictionary<string, ShibbolethAttributeValue>();
             foreach(var keyValuePair in collection)
