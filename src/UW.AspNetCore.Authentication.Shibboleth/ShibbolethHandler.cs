@@ -23,19 +23,22 @@ namespace UW.AspNetCore.Authentication
         /// </summary>
         protected new ShibbolethEvents Events
         {
-            get { return (ShibbolethEvents)base.Events; }
-            set { base.Events = value; }
+            get => (ShibbolethEvents)base.Events!;
+            set => base.Events = value;
         }
 
         protected override Task<object> CreateEventsAsync() => Task.FromResult<object>(new ShibbolethEvents());
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Searches headers for Shibboleth parameters.  If found, an identity created with supplied information.
+        /// </summary>
+        /// <returns></returns>
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
             try
             {
 
-                IShibbolethProcessor shibbolethProcessor;
+                IShibbolethProcessor? shibbolethProcessor;
                 var shibbolethAttributes = Options.ShibbolethAttributes;
 
                 // Give the application opportunity to manually select the Shibboleth processor
@@ -46,7 +49,7 @@ namespace UW.AspNetCore.Authentication
                 // if the application retrieved a Shibboleth processor from somewhere else, use that.
                 shibbolethProcessor = processorSelectionContext.Processor;
 
-                if (shibbolethProcessor == null || shibbolethProcessor.IsShibbolethSession(Context)) 
+                if (shibbolethProcessor == null || !shibbolethProcessor.IsShibbolethSession(Context)) 
                 {
                     // check for variables first.  This is the preferred method when using IIS7 and considered more secure
                     // https://wiki.shibboleth.net/confluence/display/SP3/AttributeAccess#AttributeAccess-ServerVariables
@@ -107,7 +110,7 @@ namespace UW.AspNetCore.Authentication
             var context = new ShibbolethCreatingTicketContext(Context, Scheme, Options, new ClaimsPrincipal(identity), properties, userData);
             await Events.CreatingTicket(context);
 
-            return new AuthenticationTicket(context.Principal, context.Properties, Scheme.Name);
+            return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
 
         }
 

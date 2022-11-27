@@ -14,6 +14,6 @@ namespace UW.AspNetCore.Authentication
 
         }
 
-        public IShibbolethProcessor Processor { get; set; }
+        public IShibbolethProcessor? Processor { get; set; }
     }
 }

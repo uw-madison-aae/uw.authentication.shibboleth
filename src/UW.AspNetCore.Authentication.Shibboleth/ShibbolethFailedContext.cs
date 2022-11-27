@@ -12,6 +12,6 @@ namespace UW.AspNetCore.Authentication
             ShibbolethOptions options)
             : base(context, scheme, options) { }
 
-        public Exception Exception { get; set; }
+        public Exception? Exception { get; set; }
     }
 }
