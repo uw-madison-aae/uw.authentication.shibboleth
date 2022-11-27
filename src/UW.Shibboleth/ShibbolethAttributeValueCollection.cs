@@ -1,42 +1,33 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace UW.Shibboleth
 {
     /// <summary>
-    /// Collection that stores Shibboleth attribute value by their Id
+    /// Collection that stores Shibboleth session attribute values by their Shibboleth Attribute Id
     /// </summary>
-    public class ShibbolethAttributeValueCollection : Dictionary<string, string>
+    public class ShibbolethAttributeValueCollection : Dictionary<string, ShibbolethAttributeValue>
     {
 
         public ShibbolethAttributeValueCollection()
         {
         }
 
-        public ShibbolethAttributeValueCollection(ShibbolethAttributeValueCollection existing_collection) : base(existing_collection)
+        public ShibbolethAttributeValueCollection(ShibbolethAttributeValueCollection collection) : base(collection)
         {
 
         }
 
-        public ShibbolethAttributeValueCollection(IDictionary<string, string> collection) : base(collection)
+        public ShibbolethAttributeValueCollection(IDictionary<string, ShibbolethAttributeValue> collection) : base(collection)
         {
+
         }
 
         public void Add(ShibbolethAttributeValue attributeValue)
         {
-            Add(attributeValue.Id, attributeValue.Value);
+            Add(attributeValue.Id, attributeValue);
         }
 
-        public new ShibbolethAttributeValue this[string attributeId]
-        {
-            get
-            {
-                return new ShibbolethAttributeValue(attributeId, base[attributeId]);
-            }
-        }
-
-        public KeyCollection Ids
+        public KeyCollection AttributeIds
         {
             get
             {
@@ -44,14 +35,14 @@ namespace UW.Shibboleth
             }
         }
 
-        public bool ContainsId(string key)
+        public bool ContainsAttribute(string attributeId)
         {
-            return ContainsKey(key);
+            return ContainsKey(attributeId);
         }
 
-        public bool ValueIsNullOrEmpty(string key)
+        public bool ValueIsNullOrEmpty(string attributeId)
         {
-            return string.IsNullOrEmpty(this[key].Value);
+            return string.IsNullOrEmpty(this[attributeId].Value);
         }
     }
 
