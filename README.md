@@ -1,8 +1,8 @@
 # UW.Authentication
 
-This library is for ASP.Net applications (ASP.Net 3.1/5/6+) and [Shibboleth](https://www.shibboleth.net/) authentication at the University of Wisconsin-Madison. Although the library is created using UW Shibboleth attributes, it can be overriden to utilize alternative attribute mappings for other systems.
+This library is for ASP.NET applications (ASP.Net 3.1/5/6+) and [Shibboleth](https://www.shibboleth.net/) authentication at the University of Wisconsin-Madison. Although the library is created using UW Shibboleth attributes, it can be overriden to utilize alternative attribute mappings for other systems.
 
->*For those still running .Net Framework, see the [rel/2.0 branch](../../tree/rel/aspnet-2.0) for a library that uses `IHttpModule` to work with .Net Framework 4.7.2+ apps.*
+>*For those still running .Net Framework, see the [rel/2.0 branch](../../tree/rel/aspnet-2.0) for a library that uses `IHttpModule` to work with .Net Framework 4.6.2+ apps.*
 
 ### Purpose
 - Handle MVC authentication in order to utilize things like the [Authorize] attribute
@@ -10,36 +10,35 @@ This library is for ASP.Net applications (ASP.Net 3.1/5/6+) and [Shibboleth](htt
 - Shibboleth authentication itself is handled by IIS/Apache.  This library merely consumes Shibboleth data after authentication has taken place.
 
 ### Compatibility
-- ASP.Net 3.1/5/6+
+- ASP.NET 3.1/5/6+
 - IIS7+ (ISAPI or IIS7 Shibboleth DLL)
-- Apache (Front-end proxy for ASP.Net 3.1/5/6+)
+- Apache (Front-end proxy for ASP.NET 3.1/5/6+)
 
 _This documentation does NOT cover Shibboleth setup for IIS/Apache.  Please refer to [UW-Madison documentation](https://kb.wisc.edu/86317) for that information._
 
 ------------
 ## How It Works
 
-The library hooks into the Authentication middleware of the ASP.Net application, examines the headers/variables for evidence of a Shibboleth session, then creates a `ClaimsPrincipal` populated with Shibboleth attributes and sets the `HttpApplication.User` with it. This is accomplished in a `HandleAuthenticationAsync()` method in a custom `Microsoft.AspNetCore.Authentication.AuthenticationHandler`.
+The library hooks into the Authentication middleware of the ASP.NET application, examines the headers/variables for evidence of a Shibboleth session, then creates a `ClaimsPrincipal` populated with Shibboleth attributes and sets the `HttpApplication.User` with it. This is accomplished in a `HandleAuthenticationAsync()` method in a custom `Microsoft.AspNetCore.Authentication.AuthenticationHandler`.
 
-### Setup
+# Setup
 
 Starting with Shibboleth SP v3, using the iis7_shib.dll with the `useVariables="true"` in either the `<ISAPI>` or `<Site>` sections is the recommended method for running Shibboleth in IIS7+.  Information about Shibboleth IIS installation [can be found here](https://wiki.shibboleth.net/confluence/display/SP3/IIS).
 
 1. Download and install the [UW.AspNetCore.Authentication.Shibboleth](https://www.nuget.org/packages/UW.AspNetCore.Authentication.Shibboleth/) package.
 
-2.  Add the `AddUWShibboleth()` to the `IAuthenticationBuilder` in Startup.cs.
+2.  Add the `AddUWShibboleth()` to the `IAuthenticationBuilder` in Program.cs (.NET6) or Startup.cs (prior to .NET6).
 
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = ShibbolethAuthenticationDefaults.AuthenticationScheme;
-            }).AddUWShibboleth();
-        }
+    ```csharp
+    builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultScheme = ShibbolethDefaults.AuthenticationScheme;
+    }).AddUWShibboleth();
+    ```
 
-#### Using Apache on Linux
+## Using Apache on Linux
 
-Headers must be forwarded from the Apache Reverse Proxy into the ASP.Net app running on Kestrel.  This is done using the `RequestHeader` declaration.  You must manually define every header from Shibboleth that you wish to use in the ASP.Net app.   **ShibSessionIndex** is **required** at a minimum, as that is what the library uses to determine if a Shibboleth session is in place.
+Headers must be forwarded from the Apache Reverse Proxy into the ASP.NET app running on Kestrel.  This is done using the `RequestHeader` declaration.  You must manually define every header from Shibboleth that you wish to use in the ASP.NET app.   **ShibSessionIndex** is **required** at a minimum, as that is what the library uses to determine if a Shibboleth session is in place.
 
 		RequestHeader set isMemberOf %{isMemberOf}e
 		RequestHeader set eppn %{eppn}e
@@ -50,12 +49,133 @@ Headers must be forwarded from the Apache Reverse Proxy into the ASP.Net app run
 		RequestHeader set wiscEduPVI %{wiscEduPVI}e
 		RequestHeader set ShibSessionIndex %{ShibSessionIndex}e
 
+# Shibboleth Attributes
+The library comes pre-loaded with all attribute names utilized in the UW-Madison Shibboleth implementation.  This list can be [viewed here](../../tree/rel/main/src/UW.Shibboleth/ShibbolethAttributeCollection.cs#L22).
+
+By default, the following Shibboleth attributes are added as `Claim`s to the `HttpContext.User.Identity`.
+| Shibboleth Attribute | Claim Type                                                                      | UWShibbolethClaimsType | Notes                                                                                |
+|----------------------|---------------------------------------------------------------------------------|------------------------|--------------------------------------------------------------------------------------|
+| givenName            | http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname                 | FIRSTNAME              | Not a default attribute, must be released by DoIT IAM per app                        |
+| sn                   | http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname                   | LASTNAME               | Not a default attribute, must be released by DoIT IAM per app                        |
+| wiscEduPVI           | http://schemas.xmlsoap.org/ws/2005/05/identity/claims/privatepersonalidentifier | PVI                    |                                                                                      |
+| uid                  | http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name                      | UID                    | Changed to lowercase                                                                 |
+| eppn                 | http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn                       | EPPN                   |                                                                                      |
+| mail                 | http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress              | MAIL                   | Changed to lowercase.  Not a default attribute, must be released by DoIT IAM per app |
+| isMemberOf           | http://schemas.xmlsoap.org/claims/Group                                         | Group                  | Split by semicolon (;) into individual claims for each group                         |
+
+Additional Shibboleth attributes can be added to the processing.   
+
+***Please note: Any additional attributes must be explicitly released per-app by DoIT IAM***
+
+
+## Customizing Available Attributes
+
+If additional attributes are needed or other organizations wish to use this library and completely replace the default list of attributes, this can be done using the `configureOptions`.
+
+**Add Additional Attributes**
+```csharp
+// add additional attributes
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = ShibbolethDefaults.AuthenticationScheme;
+}).AddUWShibboleth(options => {
+    options.ShibbolethAttributes.Add("someCustomAttribute");
+    options.ShibbolethAttributes.Add("anotherDirectoryAttribute");
+});
+```
+
+**Replace Attribute List**
+```csharp
+// replace the entire attribute list with a new list
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = ShibbolethDefaults.AuthenticationScheme;
+}).AddUWShibboleth(options => {
+    options.ShibbolethAttributes = new ShibbolethAttributeCollection(new List<string> {
+        "someCustomAttribute",
+        "anotherDirectoryAttribute"});
+});
+```
+## Claim Types
+Shibboleth attributes are mapped to Claims using one of the following: `ClaimActions.MapAttribute`, `ClaimActions.MapCustomAttribute`, and `ClaimActions.MapCustomMultiValueAttribute` within the `ShibbolethOptions` class.   Examples:
+```csharp
+//authentication with Shibboleth
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = ShibbolethDefaults.AuthenticationScheme;
+    // define the options Action<> to add additional attribute to claim mappings
+}).AddUWShibboleth(options =>
+{
+    // The examples below are to illustrate the use of ClaimActions - these specific examples do not need 
+    // to be implemented, as they are already done so by the default configuration.
+
+    // straight value-to-claim mapping
+    options.ClaimActions.MapAttribute(UWShibbolethClaimsType.FIRSTNAME, "givenName");
+    options.ClaimActions.MapAttribute("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname", "sn");
+
+    // value-to-claim mapping that requires additional processing
+    options.ClaimActions.MapCustomAttribute(UWShibbolethClaimsType.UID, "uid", value =>
+    {
+        return value.ToLower();
+    });
+
+    // single value will be parsed to multiple claim values
+    options.ClaimActions.MapCustomMultiValueAttribute(UWShibbolethClaimsType.Group, "isMemberOf", value =>
+    {
+        return value.Split(';').ToList();
+    });
+
+});
+
+```
 ------------
 
-## Development
-This package also provides with a method to "fake" authentication during development.  You can specify fake headers/variables and have them processing as it would coming from Shibboleth, or you can just specify Claims to be added to the `HttpContext.User.Identity`.
+# Development
+***Please note: The `AddDevAuthentication()` method has been deprecated as of v7.0 of this library.***
 
-Add the `AddDevAuthentication()` method onto the `IAuthenticationBuilder`.  You can either specify a list of claims for use in `ClaimsIdentity` creation, or you can specify fake headers/variables in a `Dictionary<string,string>` that will be processing like Shibboleth headers.
+One of the challenges working with Shibboleth is how to mock the authentication during development.  This library provides a way to hook into `OnSelectingProcessor` event in order to "fake" the user data that would normally be provided via Shibboleth headers/server variables.  The manually supplied user data is then extracted and used as if it was taken from a typical Shibboleth session.
+
+```csharp
+//authentication with Shibboleth
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = ShibbolethDefaults.AuthenticationScheme;
+}).AddUWShibboleth(options =>
+{
+    // only hook into the events during development
+    if (builder.Environment.IsDevelopment())
+    {
+        // creating a new ShibbolethEvents object to send with options
+        options.Events = new ShibbolethEvents
+        {
+            // hook into the OnSelectingProcessor event
+            // this event happens before the Shibboleth processor is chosen.
+            // we will be supplying our own
+            OnSelectingProcessor = ctx =>
+            {
+                // supply the ShibbolethDevelopmentProcessor which fakes a Shibboleth session
+                // provide all Shibboleth attributes and their values
+                ctx.Processor = new ShibbolethDevelopmentProcessor(new                   ShibbolethAttributeValueCollection() {
+                        new ShibbolethAttributeValue("uid", "bbadger"),
+                        new ShibbolethAttributeValue("givenName", "Bucky"),
+                        new ShibbolethAttributeValue("sn", "Badger"),
+                        new ShibbolethAttributeValue("mail", "bucky.badger@wisc.edu"),
+                        new ShibbolethAttributeValue("wiscEduPVI", "UW999A999"),
+                        new ShibbolethAttributeValue("isMemberOf", "uw:domain:dept.wisc.edu:administrativestaff;uw:domain:dept.wisc.edu:it:sysadmin")
+                    }
+                );
+
+                // this is an asynchronous event, so a task must be return unless an 
+                // await is used
+                return Task.CompletedTask;
+            }
+        };
+    }
+});
+```
+
+
+ 
 
 ##### Fake headers/variables
 
