@@ -11,7 +11,7 @@
 		<Nullable>enable</Nullable>
 		<RootNamespace>UW.AspNetCore.Authentication</RootNamespace>
 		<PackageProjectUrl>https://github.com/uw-madison-aae/uw.authentication.shibboleth</PackageProjectUrl>
-		<PackageReleaseNotes></PackageReleaseNotes>
+		<PackageReleaseNotes>Complete rewrite of the library.  Allows for integration with ASP.NET Identity.</PackageReleaseNotes>
 		<PackageLicenseFile>license.txt</PackageLicenseFile>
 		<RepositoryType>git</RepositoryType>
 	</PropertyGroup>
@@ -30,7 +30,7 @@
 
 
 	<ItemGroup>
-		<ProjectReference Include="..\UW.Shibboleth\UW.Shibboleth.csproj" />
+	  <PackageReference Include="UW.Shibboleth" Version="6.0.2" />
 	</ItemGroup>
 
 

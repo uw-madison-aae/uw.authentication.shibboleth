@@ -36,6 +36,30 @@ Starting with Shibboleth SP v3, using the iis7_shib.dll with the `useVariables="
     }).AddUWShibboleth();
     ```
 
+## Using with ASP.NET Identity
+This library can be used with the default implementation of ASP.NET Identity as an [external provider](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/social/?view=aspnetcore-7.0&tabs=visual-studio) for Shibboleth.
+
+For this to work, you need to setup Shibboleth to only protect an "unused" URL on the site.  You will then specify that url to the library as the Challenge URL.
+
+```xml
+<!-- example site in shibboleth2.xml -->
+<Host name="myapp.dept.wisc.edu" applicationId="myapp.dept.wisc.edu" redirectToSSL="443">
+    <Path name="shib" requireSession="true"/>
+</Host>
+```
+
+```csharp
+builder.Services.AddAuthentication()
+    .AddUWShibboleth(
+        authenticationScheme: ShibbolethDefaults.AuthenticationScheme,
+        displayName: "UW-Madison NetID",
+        options => {
+            options.ProcessChallenge = true;
+            options.ChallengePath = new PathString("/shib");   // must match Path in shibboleth2.xml
+        }
+    );
+```
+
 ## Using Apache on Linux
 
 Headers must be forwarded from the Apache Reverse Proxy into the ASP.NET app running on Kestrel.  This is done using the `RequestHeader` declaration.  You must manually define every header from Shibboleth that you wish to use in the ASP.NET app.   **ShibSessionIndex** is **required** at a minimum, as that is what the library uses to determine if a Shibboleth session is in place.
