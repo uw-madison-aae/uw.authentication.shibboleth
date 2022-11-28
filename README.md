@@ -179,7 +179,7 @@ builder.Services.AddAuthentication(options =>
             {
                 // supply the ShibbolethDevelopmentProcessor which fakes a Shibboleth session
                 //     and provides all Shibboleth attributes and their values
-                ctx.Processor = new ShibbolethDevelopmentProcessor(new                   ShibbolethAttributeValueCollection() {
+                ctx.Processor = new ShibbolethDevelopmentProcessor(new ShibbolethAttributeValueCollection() {
                         new ShibbolethAttributeValue("uid", "bbadger"),
                         new ShibbolethAttributeValue("givenName", "Bucky"),
                         new ShibbolethAttributeValue("sn", "Badger"),
