@@ -74,7 +74,7 @@ Headers must be forwarded from the Apache Reverse Proxy into the ASP.NET app run
 		RequestHeader set ShibSessionIndex %{ShibSessionIndex}e
 
 # Shibboleth Attributes
-The library comes pre-loaded with all attribute names utilized in the UW-Madison Shibboleth implementation.  This list can be [viewed here](../../tree/rel/main/src/UW.Shibboleth/ShibbolethAttributeCollection.cs#L22).
+The library comes pre-loaded with all attribute names utilized in the UW-Madison Shibboleth implementation.  This list can be [viewed here](../../tree/main/src/UW.Shibboleth/ShibbolethAttributeCollection.cs#L22).
 
 By default, the following Shibboleth attributes are added as `Claim`s to the `HttpContext.User.Identity`.
 | Shibboleth Attribute | Claim Type                                                                      | UWShibbolethClaimsType | Notes                                                                                |
