@@ -11,11 +11,20 @@ namespace UW.AspNetCore.Authentication
 {
     public class ShibbolethHandler : AuthenticationHandler<ShibbolethOptions>
     {
+
+#if NET8_0_OR_GREATER
+        public ShibbolethHandler(IOptionsMonitor<ShibbolethOptions> options, ILoggerFactory logger, UrlEncoder encoder)
+            : base(options, logger, encoder)
+        {
+
+        }
+#else
         public ShibbolethHandler(IOptionsMonitor<ShibbolethOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock)
             : base(options, logger, encoder, clock)
         {
 
         }
+#endif
 
         /// <summary>
         /// The handler calls methods on the events which give the application control at certain points where processing is occurring. 
