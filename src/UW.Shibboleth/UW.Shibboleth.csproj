@@ -5,12 +5,12 @@
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>UW.Shibboleth.snk</AssemblyOriginatorKeyFile>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<Version>6.0.2</Version>
+		<Version>6.0.3</Version>
 		<Authors>Eric Dieckman</Authors>
 		<Company>AAE IT Services Center</Company>
 		<PackageLicenseUrl></PackageLicenseUrl>
 		<PackageLicenseFile>license.txt</PackageLicenseFile>
-		<PackageReleaseNotes>Converted Shibboleth attributes to a list of strings, not XML.</PackageReleaseNotes>
+		<PackageReleaseNotes>Added uid to list of default Shibboleth attributes</PackageReleaseNotes>
 		<RepositoryUrl>https://github.com/uw-madison-aae/uw.authentication.shibboleth.git</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/uw-madison-aae/uw.authentication.shibboleth</PackageProjectUrl>
 		<Description>Common objects used in building identities and principals from the University of Wisconsin - Madison Shibboleth implementation.</Description>

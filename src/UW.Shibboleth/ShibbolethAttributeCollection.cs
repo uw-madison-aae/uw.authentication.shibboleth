@@ -20,6 +20,7 @@ namespace UW.Shibboleth
         /// </summary>
         /// <remarks>Last updated 11/23/2022</remarks>
         public static ShibbolethAttributeCollection DefaultUWAttributes = new ShibbolethAttributeCollection(new List<string> {
+            "uid",
             "mail",
             "mailAlternateAddress",
             "displayName",
