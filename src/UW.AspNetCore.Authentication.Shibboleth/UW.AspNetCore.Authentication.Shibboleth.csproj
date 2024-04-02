@@ -2,26 +2,14 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>netcoreapp3.1;net5.0;net6.0;net7.0;net8.0</TargetFrameworks>
-		<Authors>Eric Dieckman</Authors>
-		<Company>AAE IT Services Center</Company>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Description>Library for handling UW's Shibboleth authentication in ASP.Net web applications</Description>
-		<RepositoryUrl>https://github.com/uw-madison-aae/uw.authentication.shibboleth.git</RepositoryUrl>
+		<RepositoryUrl>https://github.com/uw-madison-aae/uw.authentication.shibboleth</RepositoryUrl>
 		<Version>7.1.0</Version>
-		<Nullable>enable</Nullable>
 		<RootNamespace>UW.AspNetCore.Authentication</RootNamespace>
-		<PackageProjectUrl>https://github.com/uw-madison-aae/uw.authentication.shibboleth</PackageProjectUrl>
 		<PackageReleaseNotes>Added .net7 and .net8</PackageReleaseNotes>
-		<PackageLicenseFile>license.txt</PackageLicenseFile>
 		<RepositoryType>git</RepositoryType>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<None Include="..\..\license.txt">
-			<Pack>True</Pack>
-			<PackagePath></PackagePath>
-		</None>
-	</ItemGroup>
 
 
 	<ItemGroup>

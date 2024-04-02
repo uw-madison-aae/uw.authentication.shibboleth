@@ -1,0 +1,106 @@
+<Project>
+	<PropertyGroup>
+		<RepoRoot>$(MSBuildThisFileDirectory)</RepoRoot>
+		<RepoEngPath>$(MSBuildThisFileDirectory)eng</RepoEngPath>
+		<RepoSrcPath>$(RepoRoot)src</RepoSrcPath>
+	</PropertyGroup>
+
+	<!-- Setup common output paths -->
+	<PropertyGroup>
+		<ArtifactsDir Condition="'$(ArtifactsDir)' == ''">$(RepoRoot)artifacts\</ArtifactsDir>
+		<ArtifactsObjDir>$(ArtifactsDir)obj\</ArtifactsObjDir>
+		<ArtifactsBinDir>$(ArtifactsDir)bin\</ArtifactsBinDir>
+		<ArtifactsPackagesDir>$(ArtifactsDir)packages\$(Configuration)\</ArtifactsPackagesDir>
+
+		<OutDirName Condition="'$(OutDirName)' == ''">$(MSBuildProjectName)</OutDirName>
+
+		<BaseOutputPath Condition="'$(BaseOutputPath)' == ''">$([System.IO.Path]::GetFullPath('$(ArtifactsBinDir)$(OutDirName)\'))</BaseOutputPath>
+		<OutputPath Condition="'$(PlatformName)' == 'AnyCPU'">$(BaseOutputPath)$(Configuration)\</OutputPath>
+		<OutputPath Condition="'$(PlatformName)' != 'AnyCPU'">$(BaseOutputPath)$(PlatformName)\$(Configuration)\</OutputPath>
+
+		<BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)' == ''">$([System.IO.Path]::GetFullPath('$(ArtifactsObjDir)$(OutDirName)\'))</BaseIntermediateOutputPath>
+		<IntermediateOutputPath Condition="'$(PlatformName)' == 'AnyCPU'">$(BaseIntermediateOutputPath)$(Configuration)\</IntermediateOutputPath>
+		<IntermediateOutputPath Condition="'$(PlatformName)' != 'AnyCPU'">$(BaseIntermediateOutputPath)$(PlatformName)\$(Configuration)\</IntermediateOutputPath>
+
+		<PackageOutputPath>$(ArtifactsPackagesDir)/$(MSBuildProjectName)</PackageOutputPath>
+
+		<!-- Used to help catch projects that use this property but don't end up importing our props below -->
+		<RequiredTargetFrameworks>import-required-properties</RequiredTargetFrameworks>
+	</PropertyGroup>
+
+
+	<!-- default package properties -->
+	<PropertyGroup>
+		<Company>AAE IT Services Center</Company>
+		<Copyright>© University of Wisconsin $([System.DateTime]::Now.Year)</Copyright>
+		<Authors>Eric Dieckman</Authors>
+		<PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<NeutralLanguage>en-US</NeutralLanguage>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<LangVersion>11.0</LangVersion>
+	</PropertyGroup>
+	
+	<PropertyGroup>
+		<!--
+      Disable NU5105 NuGet Pack warning that the version is SemVer 2.0.
+      SemVer 2.0 is supported by NuGet since 3.0.0 (July 2015) in some capacity, and fully since 3.5.0 (October 2016).
+    -->
+		<NoWarn>$(NoWarn);NU5105</NoWarn>
+		<!--
+      https://github.com/dotnet/roslyn-analyzers/issues/5628
+    -->
+		<NoWarn>$(NoWarn);CA1812</NoWarn>
+		<!--
+      Disable some NetAnalyzers rules
+     -->
+		<NoWarn>
+			$(NoWarn);
+			CA1716; <!-- avoid using method names that are reserved in other languages -->
+			CA1308; <!-- prefer ToUpperInvariant  -->
+			CA1819; <!-- Properties should not return arrays -->
+			CA1710; <!-- Use Collection sufix -->
+			CA1028; <!-- Enum backing type should be int -->
+			CA1032; <!-- Add default exception ctors -->
+			CA1063; <!-- Dispose implementation -->
+			CA1066; <!-- Implement IEquatable -->
+			CA1815; <!-- Equality members on structs -->
+			CA2007; <!-- Do not directly await a Task without calling ConfigureAwait (replaced by AZC0012) -->
+			CA2231; <!-- Override Equality operators -->
+			CA2225; <!-- Provide alternative to implicit operators -->
+			CA1714; <!-- Flags should have plural names -->
+			CA1062; <!-- Public parameter should be checked for null -->
+			CA1031; <!-- Don't catch generic exceptions -->
+			CA2000; <!-- Call dispose on IDisposable objects -->
+			CA2012; <!-- ValueTask should only be awaited once - conflicts with EnsureCompleted check -->
+		</NoWarn>
+		<!--
+      Disable some MSBuild warnings
+    -->
+		<NoWarn>
+			$(NoWarn);
+			MSB3245; <!-- Do not warn if a package reference is unavailable -->
+		</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<!-- Enable documentation for all projects unless explicitly disabled. -->
+		<DocumentationFile>$(IntermediateOutputPath)$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<!-- Enable Style Cop by default -->
+		<EnableStyleCopAnalyzers Condition="'$(EnableStyleCopAnalyzers)' == ''">true</EnableStyleCopAnalyzers>
+	</PropertyGroup>
+
+	<!-- CodeAnalysis RuleSet -->
+	<PropertyGroup Condition="'$(EnableStyleCopAnalyzers)' == 'true'">
+		<CodeAnalysisRuleSet>$(RepoEngPath)\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+	</PropertyGroup>
+
+
+	<Import Project="$(RepoEngPath)\Directory.Build.Common.props" />
+</Project>
