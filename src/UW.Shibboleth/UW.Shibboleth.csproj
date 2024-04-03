@@ -6,22 +6,10 @@
 		<AssemblyOriginatorKeyFile>UW.Shibboleth.snk</AssemblyOriginatorKeyFile>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Version>6.0.3</Version>
-		<Authors>Eric Dieckman</Authors>
-		<Company>AAE IT Services Center</Company>
-		<PackageLicenseUrl></PackageLicenseUrl>
-		<PackageLicenseFile>license.txt</PackageLicenseFile>
 		<PackageReleaseNotes>Added uid to list of default Shibboleth attributes</PackageReleaseNotes>
-		<RepositoryUrl>https://github.com/uw-madison-aae/uw.authentication.shibboleth.git</RepositoryUrl>
-		<PackageProjectUrl>https://github.com/uw-madison-aae/uw.authentication.shibboleth</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/uw-madison-aae/uw.authentication.shibboleth</RepositoryUrl>
 		<Description>Common objects used in building identities and principals from the University of Wisconsin - Madison Shibboleth implementation.</Description>
 		<RepositoryType>git</RepositoryType>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<None Include="license.txt">
-			<Pack>True</Pack>
-			<PackagePath></PackagePath>
-		</None>
-	</ItemGroup>
 
 </Project>
