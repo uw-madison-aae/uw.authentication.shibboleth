@@ -14,7 +14,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleMVCCore", "Samples\Sa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UW.AspNetCore.Authentication.Shibboleth", "src\UW.AspNetCore.Authentication.Shibboleth\UW.AspNetCore.Authentication.Shibboleth.csproj", "{19AB6D89-66AC-436A-8B82-974F48E9C4D6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6F7DCCB4-20FA-4D57-9EA1-F8BB24E21104}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6A335CD8-6846-47D2-89D2-C7ACFD4ECE86}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
