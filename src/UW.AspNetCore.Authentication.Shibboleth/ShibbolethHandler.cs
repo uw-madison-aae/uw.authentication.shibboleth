@@ -38,6 +38,11 @@ namespace UW.AspNetCore.Authentication
 
         protected override Task<object> CreateEventsAsync() => Task.FromResult<object>(new ShibbolethEvents());
 
+        protected async Task<HandleRequestResult> HandleShibbolethAuthenticateAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Searches headers for Shibboleth parameters.  If found, an identity created with supplied information.
         /// </summary>
@@ -88,7 +93,7 @@ namespace UW.AspNetCore.Authentication
             } //end outer try
             catch (Exception ex)
             {
-                Logger.ErrorProcessingMessage(ex);
+                //Logger.ErrorProcessingMessage(ex);
 
                 var authenticationFailedContext = new ShibbolethFailedContext(Context, Scheme, Options)
                 {
