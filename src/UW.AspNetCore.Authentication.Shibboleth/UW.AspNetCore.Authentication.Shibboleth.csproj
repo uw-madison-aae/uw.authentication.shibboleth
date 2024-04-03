@@ -14,6 +14,7 @@
 		<PackageReleaseNotes>Added .net7 and .net8</PackageReleaseNotes>
 		<PackageLicenseFile>license.txt</PackageLicenseFile>
 		<RepositoryType>git</RepositoryType>
+		<LangVersion>11.0</LangVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -23,6 +24,10 @@
 		</None>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
+	</ItemGroup>
+
 
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
@@ -30,7 +35,7 @@
 
 
 	<ItemGroup>
-	  <PackageReference Include="UW.Shibboleth" Version="6.0.3" />
+	  <ProjectReference Include="..\UW.Shibboleth\UW.Shibboleth.csproj" />
 	</ItemGroup>
 
 
