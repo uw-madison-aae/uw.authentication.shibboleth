@@ -11,18 +11,16 @@ namespace UW.AspNetCore.Authentication
 {
     public class ShibbolethHandler : AuthenticationHandler<ShibbolethOptions>
     {
-
+        private Task<AuthenticateResult>? _extractShibbolethDataTask
 #if NET8_0_OR_GREATER
         public ShibbolethHandler(IOptionsMonitor<ShibbolethOptions> options, ILoggerFactory logger, UrlEncoder encoder)
             : base(options, logger, encoder)
         {
-
         }
 #else
         public ShibbolethHandler(IOptionsMonitor<ShibbolethOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock)
             : base(options, logger, encoder, clock)
         {
-
         }
 #endif
 
@@ -38,6 +36,63 @@ namespace UW.AspNetCore.Authentication
 
         protected override Task<object> CreateEventsAsync() => Task.FromResult<object>(new ShibbolethEvents());
 
+        /// <summary>
+        /// Ensures that a Shibboleth session is in place
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>Modeled after CookieAuthenticationHandler
+        /// https://github.com/dotnet/aspnetcore/blob/3f16e780a3a708d1d63fb4458157178c7fab5f39/src/Security/Authentication/Cookies/src/CookieAuthenticationHandler.cs#L82</remarks>
+        private Task<AuthenticateResult> EnsureShibbolethSession()
+        {
+            // We only need to extract the Shibboleth values once
+            if (_extractShibbolethDataTask == null)
+            {
+                _extractShibbolethDataTask = ExamineForShibbolethSession();
+            }
+            return _extractShibbolethDataTask;
+        }
+
+        private async Task<AuthenticateResult> ExamineForShibbolethSession()
+        {
+            IShibbolethProcessor? shibbolethProcessor;
+            var shibbolethAttributes = Options.ShibbolethAttributes;
+
+            // Give the application opportunity to manually select the Shibboleth processor
+            // typically used for development to manually create a Shibboleth session
+            var processorSelectionContext = new ShibbolethProcessorSelectionContext(Context, Scheme, Options);
+            await Events.ShibbolethProcessorSelection(processorSelectionContext);
+
+            // if the application retrieved a Shibboleth processor from somewhere else, use that.
+            shibbolethProcessor = processorSelectionContext.Processor;
+
+            if (shibbolethProcessor == null || !shibbolethProcessor.IsShibbolethSession(Context))
+            {
+                // check for variables first.  This is the preferred method when using IIS7 and considered more secure
+                // https://wiki.shibboleth.net/confluence/display/SP3/AttributeAccess#AttributeAccess-ServerVariables
+                shibbolethProcessor = new ShibbolethVariableProcessor(shibbolethAttributes);
+
+                // is Shibboleth enabled and in variable mode?
+                if (!shibbolethProcessor.IsShibbolethSession(Context))
+                {
+                    // Shibboleth isn't enabled, or is in header mode.  Check header mode
+                    shibbolethProcessor = new ShibbolethHeaderProcessor(shibbolethAttributes);
+
+                    if (!shibbolethProcessor.IsShibbolethSession(Context))
+                    {
+                        // no Shibboleth sessions in header or variable mode.  Not authenticated.
+                        // no result, as authentication may be handled by something else later
+                        return AuthenticateResult.NoResult();
+                    }
+                }
+
+            }
+
+            var identity = new ClaimsIdentity(ClaimsIssuer);
+            var userData = shibbolethProcessor.ExtractAttributeValues(Context);
+
+            return AuthenticateResult.Success(await CreateTicketAsync(identity, new AuthenticationProperties(), userData));
+        }
+
         protected async Task<HandleRequestResult> HandleShibbolethAuthenticateAsync()
         {
             throw new NotImplementedException();
@@ -51,44 +106,11 @@ namespace UW.AspNetCore.Authentication
         {
             try
             {
-
-                IShibbolethProcessor? shibbolethProcessor;
-                var shibbolethAttributes = Options.ShibbolethAttributes;
-
-                // Give the application opportunity to manually select the Shibboleth processor
-                // typically used for development to manually create a Shibboleth session
-                var processorSelectionContext = new ShibbolethProcessorSelectionContext(Context, Scheme, Options);
-                await Events.ShibbolethProcessorSelection(processorSelectionContext);
-
-                // if the application retrieved a Shibboleth processor from somewhere else, use that.
-                shibbolethProcessor = processorSelectionContext.Processor;
-
-                if (shibbolethProcessor == null || !shibbolethProcessor.IsShibbolethSession(Context)) 
+                var result = await EnsureShibbolethSession();
+                if (!result.Succeeded)
                 {
-                    // check for variables first.  This is the preferred method when using IIS7 and considered more secure
-                    // https://wiki.shibboleth.net/confluence/display/SP3/AttributeAccess#AttributeAccess-ServerVariables
-                    shibbolethProcessor = new ShibbolethVariableProcessor(shibbolethAttributes);
-
-                    // is Shibboleth enabled and in variable mode?
-                    if (!shibbolethProcessor.IsShibbolethSession(Context))
-                    {
-                        // Shibboleth isn't enabled, or is in header mode.  Check header mode
-                        shibbolethProcessor = new ShibbolethHeaderProcessor(shibbolethAttributes);
-
-                        if (!shibbolethProcessor.IsShibbolethSession(Context))
-                        {
-                            // no Shibboleth sessions in header or variable mode.  Not authenticated.
-                            // no result, as authentication may be handled by something else later
-                            return AuthenticateResult.NoResult();
-                        }
-                    }
-
+                    return result;
                 }
-
-                var identity = new ClaimsIdentity(ClaimsIssuer);
-                var userData = shibbolethProcessor.ExtractAttributeValues(Context);
-
-                return AuthenticateResult.Success(await CreateTicketAsync(identity, new AuthenticationProperties(), userData));
 
             } //end outer try
             catch (Exception ex)
@@ -108,8 +130,6 @@ namespace UW.AspNetCore.Authentication
 
                 throw;
             } //end catch
-
-
         }
 
         protected virtual async Task<AuthenticationTicket> CreateTicketAsync(
@@ -125,23 +145,19 @@ namespace UW.AspNetCore.Authentication
             await Events.CreatingTicket(context);
 
             return new AuthenticationTicket(context.Principal!, context.Properties, Scheme.Name);
-
         }
 
         protected override Task HandleChallengeAsync(AuthenticationProperties properties)
         {
-            if (!Options.ProcessChallenge || !Options.ChallengePath.HasValue)
+            if (!Options.ProcessChallenge || !Options.CallbackPath.HasValue)
             {
                 return base.HandleChallengeAsync(properties);
-                
             }
 
-            var redirectUri = OriginalPathBase + Options.ChallengePath;
+            var redirectUri = OriginalPathBase + Options.CallbackPath;
 
             var redirectContext = new RedirectContext<ShibbolethOptions>(Context, Scheme, Options, properties, redirectUri);
             return Events.RedirectToAuthorizationEndpoint(redirectContext);
-
         }
-
     }
 }
