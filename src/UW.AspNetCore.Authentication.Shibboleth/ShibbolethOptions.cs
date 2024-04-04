@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
+using System.Resources;
 using UW.Shibboleth;
 
 namespace UW.AspNetCore.Authentication
@@ -44,15 +45,37 @@ namespace UW.AspNetCore.Authentication
         /// The challenge path within the application's pase bath where the ticket will be populated with Shibboleth session information
         /// </summary>
         /// <value>Local url that is secured with Shibboleth</value>
-        public PathString ChallengePath { get; set; }
+        [Obsolete("Use CallbackPath instead")]
+        public PathString ChallengePath => CallbackPath;
+
+        /// <summary>
+        /// The request path within the application's base path where the user-agent will be returned.
+        /// The middleware will process this request when it arrives.
+        /// </summary>
+        public PathString CallbackPath { get; set; }
 
         /// <summary>
         /// Gets or sets whether a challenge that is initiated should be processed
         /// </summary>
         /// <remarks>If false, will produce a 401 Status Code for challenge</remarks>
-        public bool ProcessChallenge { get; set; } = false;
+        [Obsolete("Deprecated - UseChallenge replaces this field.")]
+        public bool ProcessChallenge => UseChallenge;
+
+        /// <summary>
+        /// Gets or sets whether a challenge that is initiated should be processed
+        /// </summary>
+        /// <remarks>If false, will produce a 401 Status Code for challenge.  This is typically left to false when Shibboleth protected an entire site.  Set to true when mimicing an OAuth-style site.</remarks>
+        public bool UseChallenge { get; set; } = false;
 
         public IShibbolethAttributeCollection ShibbolethAttributes { get; set; } = ShibbolethAttributeCollection.DefaultUWAttributes;
+
+        /// <summary>
+        /// Gets or sets the authentication scheme corresponding to the middleware
+        /// responsible for persisting user's identity after a successful authentication.
+        /// This value typically corresponds to a cookie middleware registered in the Startup class.
+        /// When omitted, <see cref="AuthenticationOptions.DefaultSignInScheme"/> is used as a fallback value.
+        /// </summary>
+        public string? SignInScheme { get; set; }
 
         /// <summary>
         /// The object provided by the application to process events raised by the bearer authentication handler.
@@ -63,6 +86,19 @@ namespace UW.AspNetCore.Authentication
         {
             get { return (ShibbolethEvents)base.Events!; }
             set { base.Events = value; }
+        }
+
+        /// <summary>
+        /// Checks that the options are valid for a specific scheme
+        /// </summary>
+        /// <param name="scheme">The scheme being validated.</param>
+        public override void Validate(string scheme)
+        {
+            base.Validate(scheme);
+            if (string.Equals(scheme, SignInScheme, StringComparison.Ordinal))
+            {
+                throw new InvalidOperationException("The SignInScheme for a remote authentication handler cannot be set to itself.  If it was not explicitly set, the AuthenticationOptions.DefaultSignInScheme or DefaultScheme is used.");
+            }
         }
     }
 
