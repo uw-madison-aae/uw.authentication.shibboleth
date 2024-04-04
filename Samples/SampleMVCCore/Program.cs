@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UW.AspNetCore.Authentication;
 using UW.Shibboleth;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddMvc();
 
@@ -36,11 +36,9 @@ builder.Services.AddAuthentication(options =>
             }
         };
     }
-
 });
 
-var app = builder.Build();
-
+WebApplication app = builder.Build();
 
 app.UseRouting();
 app.UseAuthentication();
@@ -51,7 +49,6 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllers();
     endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
 });
-
 
 app.Run();
 

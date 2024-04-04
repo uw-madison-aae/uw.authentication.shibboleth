@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
-using System.Linq;
-using System.Resources;
 using UW.Shibboleth;
 
 namespace UW.AspNetCore.Authentication
@@ -14,6 +12,7 @@ namespace UW.AspNetCore.Authentication
         public ShibbolethOptions()
         {
             ClaimsIssuer = ShibbolethDefaults.Issuer;
+            CallbackPath = new PathString("/signin-shibboleth");
 
             ClaimActions.MapAttribute(UWShibbolethClaimsType.FIRSTNAME, "givenName");
             ClaimActions.MapAttribute(UWShibbolethClaimsType.LASTNAME, "sn");
@@ -62,9 +61,11 @@ namespace UW.AspNetCore.Authentication
         public bool ProcessChallenge => UseChallenge;
 
         /// <summary>
-        /// Gets or sets whether a challenge that is initiated should be processed
+        /// Gets or sets whether a challenge that is initiated should be processed.
+        /// If <see langword="false"/>, will produce a 401 Status Code for challenge.
+        /// This is typically left to <see langword="false"/> when Shibboleth protects an entire site.
+        /// Set to <see langword="true"/> when mimicking an OAuth-style site.
         /// </summary>
-        /// <remarks>If false, will produce a 401 Status Code for challenge.  This is typically left to false when Shibboleth protected an entire site.  Set to true when mimicing an OAuth-style site.</remarks>
         public bool UseChallenge { get; set; } = false;
 
         public IShibbolethAttributeCollection ShibbolethAttributes { get; set; } = ShibbolethAttributeCollection.DefaultUWAttributes;
@@ -73,6 +74,7 @@ namespace UW.AspNetCore.Authentication
         /// Gets or sets the authentication scheme corresponding to the middleware
         /// responsible for persisting user's identity after a successful authentication.
         /// This value typically corresponds to a cookie middleware registered in the Startup class.
+        /// It is ignored if <see cref="UseChallenge"/> is <see langword="false"/>.
         /// When omitted, <see cref="AuthenticationOptions.DefaultSignInScheme"/> is used as a fallback value.
         /// </summary>
         public string? SignInScheme { get; set; }
@@ -95,11 +97,10 @@ namespace UW.AspNetCore.Authentication
         public override void Validate(string scheme)
         {
             base.Validate(scheme);
-            if (string.Equals(scheme, SignInScheme, StringComparison.Ordinal))
+            if (UseChallenge && string.Equals(scheme, SignInScheme, StringComparison.Ordinal))
             {
-                throw new InvalidOperationException("The SignInScheme for a remote authentication handler cannot be set to itself.  If it was not explicitly set, the AuthenticationOptions.DefaultSignInScheme or DefaultScheme is used.");
+                throw new InvalidOperationException("The SignInScheme for a Shibboleth authentication handler cannot be set to itself.  If it was not explicitly set, the AuthenticationOptions.DefaultSignInScheme or DefaultScheme is used.");
             }
         }
     }
-
 }
