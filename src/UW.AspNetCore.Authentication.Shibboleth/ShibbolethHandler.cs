@@ -4,6 +4,7 @@ using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using UW.Shibboleth;
@@ -169,7 +170,7 @@ public class ShibbolethHandler : AuthenticationHandler<ShibbolethOptions>,
         // Default redirect path is the base path
         if (string.IsNullOrEmpty(ticketContext.ReturnUri))
         {
-            ticketContext.ReturnUri = "/";
+            ticketContext.ReturnUri = BuildRedirectUri("/");
         }
 
         Response.Redirect(ticketContext.ReturnUri);
@@ -315,10 +316,38 @@ public class ShibbolethHandler : AuthenticationHandler<ShibbolethOptions>,
             return base.HandleChallengeAsync(properties);
         }
 
-        Microsoft.AspNetCore.Http.PathString redirectUri = OriginalPathBase + Options.CallbackPath;
+        if (string.IsNullOrEmpty(properties.RedirectUri))
+        {
+            properties.RedirectUri = OriginalPath + Request.QueryString;
+        }
 
-        var redirectContext = new RedirectContext<ShibbolethOptions>(Context, Scheme, Options, properties, redirectUri);
+        string authorizationEndpoint = BuildChallengeUrl(properties, BuildRedirectUri(properties.RedirectUri));
+
+        var redirectContext = new RedirectContext<ShibbolethOptions>(
+            Context, Scheme, Options,
+            properties, authorizationEndpoint);
         return Events.RedirectToAuthorizationEndpoint(redirectContext);
+    }
+
+    /// <summary>
+    /// Constructs the simulated OAuth challenge url.  This should be a Shibboleth-protected endpoint
+    /// </summary>
+    /// <param name="properties">The <see cref="AuthenticationProperties"/>.</param>
+    /// <param name="redirectUri">The url to redirect to once the challenge is completed.</param>
+    /// <returns>The challenge url</returns>
+    /// <remarks>Modeled off of OAuthHandler.cs
+    /// https://github.com/dotnet/aspnetcore/blob/6196f76672ed4a4415f7a12e8ae17b8212ebf462/src/Security/Authentication/OAuth/src/OAuthHandler.cs#L300
+    /// </remarks>
+    protected string BuildChallengeUrl(AuthenticationProperties properties, string redirectUri)
+    {
+        var parameters = new Dictionary<string, string>()
+        {
+            { "returnUrl", redirectUri }
+        };
+
+        PathString authorizationEndpoint = OriginalPathBase + Options.CallbackPath;
+
+        return QueryHelpers.AddQueryString(authorizationEndpoint, parameters!);
     }
 
     /// <inheritdoc/>
