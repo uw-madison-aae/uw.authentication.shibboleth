@@ -75,6 +75,10 @@ namespace UW.AspNetCore.Authentication
         // Note: this deliberately matches the default parameter name used by the cookie handler.
         public string ReturnUrlParameter { get; set; } = "ReturnUrl";
 
+        /// <summary>
+        /// Gets or sets the <see cref="IShibbolethAttributeCollection"/> that contains all attributes to extract
+        /// from the Shibboleth headers/variables
+        /// </summary>
         public IShibbolethAttributeCollection ShibbolethAttributes { get; set; } = ShibbolethAttributeCollection.DefaultUWAttributes;
 
         /// <summary>
@@ -87,7 +91,7 @@ namespace UW.AspNetCore.Authentication
         public string? SignInScheme { get; set; }
 
         /// <summary>
-        /// The object provided by the application to process events raised by the bearer authentication handler.
+        /// The object provided by the application to process events raised by the Shibboleth handler.
         /// The application may implement the interface fully, or it may create an instance of <see cref="ShibbolethEvents"/>
         /// and assign delegates only to the events it wants to process.
         /// </summary>

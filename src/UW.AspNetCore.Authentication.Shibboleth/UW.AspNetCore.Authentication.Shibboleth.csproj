@@ -3,11 +3,11 @@
 	<PropertyGroup>
 		<TargetFrameworks>netcoreapp3.1;net5.0;net6.0;net7.0;net8.0</TargetFrameworks>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<Description>Library for handling UW's Shibboleth authentication in ASP.Net web applications</Description>
+		<Description>Library for handling UW's Shibboleth authentication in ASP.NET web applications</Description>
 		<RepositoryUrl>https://github.com/uw-madison-aae/uw.authentication.shibboleth</RepositoryUrl>
-		<Version>7.1.0</Version>
+		<Version>8.0.0</Version>
 		<RootNamespace>UW.AspNetCore.Authentication</RootNamespace>
-		<PackageReleaseNotes>Added .net7 and .net8</PackageReleaseNotes>
+		<PackageReleaseNotes>Refactor to properly process OAuth/challenge</PackageReleaseNotes>
 		<RepositoryType>git</RepositoryType>
 	</PropertyGroup>
 
