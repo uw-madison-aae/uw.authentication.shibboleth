@@ -1,12 +1,12 @@
-# UW.Authentication
+# UW.Authentication.Shibboleth
 
 This library is for ASP.NET applications (ASP.NET 3.1+) and [Shibboleth](https://www.shibboleth.net/) authentication at the University of Wisconsin-Madison. Although the library is created using UW Shibboleth attributes, it can be overriden to utilize alternative attribute mappings for other systems.
 
 >*For those still running .Net Framework, see the [rel/2.0 branch](../../tree/rel/aspnet-2.0) for a library that uses `IHttpModule` to work with .Net Framework 4.6.2+ apps.*
 
 ### Purpose
-- Handle MVC authentication in order to utilize things like the [Authorize] attribute
-- Set HttpContext.User.Identity to a ClaimsIdentity populated with Shibboleth attributes
+- Handle MVC authentication in order to utilize features like the [Authorize] attribute
+- Set `HttpContext.User` to a `ClaimsPrincipal` populated with Shibboleth attributes
 - Shibboleth authentication itself is handled by IIS/Apache.  This library merely consumes Shibboleth data after authentication has taken place.
 
 ### Compatibility
@@ -53,12 +53,14 @@ Headers must be forwarded from the Apache Reverse Proxy into the ASP.NET app run
 		RequestHeader set ShibSessionIndex %{ShibSessionIndex}e
 
 # `ShibbolethOptions` Class
-*Inherits from [`AuthenticationSchemeOptions`](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.authentication.authenticationschemeoptions) - those properties not included below*
+*Inherits from [`AuthenticationSchemeOptions`](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.authentication.authenticationschemeoptions) - those properties are not included below*
 
+| Property                | Description |
+|-------------------------|-------------|
 | **ClaimActions**        | A collection of Shibboleth claim actions used to select values from the user data and create Claims. |
 | **CallbackPath**        | The request path within the application's base path where the user-agent will be returned. The middleware will process this request when it arrives. |
 | **Events**              | The object provided by the application to process events raised by the Shibboleth handler. The application may implement the interface fully, or it may create an instance of `ShibbolethEvents`and assign delegates only to the events it wants to process.
-| **ReturnUrlParameter ** | Gets or sets the name of the parameter used to convey the original location of the user before the challenge was triggered. |
+| **ReturnUrlParameter**  | Gets or sets the name of the parameter used to convey the original location of the user before the challenge was triggered. |
 | **ShibbolethAttributes**  | Gets or sets the `IShibbolethAttributeCollection` that contains all attributes to extract from the Shibboleth headers/variables |
 | **SignInScheme**        |   Gets or sets the authentication scheme corresponding to the middleware responsible for persisting user's identity after a successful authentication. This value typically corresponds to a cookie middleware registered in the Startup class. It is ignored if `UseChallenge` is `false`. When omitted, `AuthenticationOptions.DefaultSignInScheme` is used as a fallback value.
 | **UseChallenge**        | Gets or sets whether a challenge that is initiated should be processed. If `false`, will produce a 401 Status Code for challenge. This is typically left to `false` when Shibboleth protects an entire site. Set to `true` when mimicking an OAuth-style site. |
@@ -67,6 +69,7 @@ Headers must be forwarded from the Apache Reverse Proxy into the ASP.NET app run
 The library comes pre-loaded with all attribute names utilized in the UW-Madison Shibboleth implementation.  This list can be [viewed here](../../tree/main/src/UW.Shibboleth/ShibbolethAttributeCollection.cs#L22).
 
 By default, the following Shibboleth attributes are added as `Claim`s to the `HttpContext.User.Identity`.
+
 | Shibboleth Attribute | Claim Type                                                                      | UWShibbolethClaimsType | Notes                                                                                |
 |----------------------|---------------------------------------------------------------------------------|------------------------|--------------------------------------------------------------------------------------|
 | givenName            | `http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname`                 | FIRSTNAME              | Not a default attribute, must be released by DoIT IAM per app                        |
@@ -120,8 +123,9 @@ builder.Services.AddAuthentication(options =>
     // define the options Action<> to add additional attribute to claim mappings
 }).AddUWShibboleth(options =>
 {
-    // The examples below are to illustrate the use of ClaimActions - these specific examples do not need 
-    // to be implemented, as they are already done so by the default configuration.
+    // The examples below are to illustrate the use of ClaimActions
+    // These specific examples do not need to be implemented,
+    // as they are already done so by the default configuration.
 
     // straight value-to-claim mapping
     options.ClaimActions.MapAttribute(UWShibbolethClaimsType.FIRSTNAME, "givenName");
@@ -196,10 +200,6 @@ This library can be also used with the default implementation of ASP.NET Identit
 
 [More Information on Identity on ASP.NET](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity)
 
-*This method is atypical.*  Examples when you might want to use this alternative method:
-  - Site uses additional 3rd-party authentication providers (such as Google, Facebook, etc)
-  - Developers wants to ASP.NET to control ***all*** aspects of authentication/authorization, instead of delegation some to the underlying Shibboleth service in the operating system.
-
 ### Setup
 Setup Shibboleth to only protect an "unused" URL on the site.  The default location is `/signin-shibboleth`.  This can be overridden in the `ShibbolethOptions.CallbackPath`.
 
@@ -223,16 +223,24 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 
 // use Shibboleth as the authentication scheme
 builder.Services.AddAuthentication(options =>
-    {
-        options.DefaultScheme = ShibbolethDefaults.AuthenticationScheme;
-    })
+{
+    options.DefaultScheme = ShibbolethDefaults.AuthenticationScheme;
+})
     .AddUWShibboleth(
         authenticationScheme: ShibbolethDefaults.AuthenticationScheme,
         displayName: "UW-Madison NetID",
-        options => {
+        options =>
+        {
             options.UseChallenge = true;  // required to process the Shibboleth login
         }
     )
+   .AddGoogle(options =>
+   {
+       IConfigurationSection googleAuthNSection =
+       config.GetSection("Authentication:Google");
+       options.ClientId = googleAuthNSection["ClientId"];
+       options.ClientSecret = googleAuthNSection["ClientSecret"];
+   });
 ```
 
 ------------
@@ -262,7 +270,8 @@ builder.Services.AddAuthentication(options =>
     .AddUWShibboleth(
         authenticationScheme: ShibbolethDefaults.AuthenticationScheme,
         displayName: "UW-Madison NetID",
-        options => {
+        options =>
+        {
             options.UseChallenge = true;  // required to process the Shibboleth login
 
             // default for this option is "/signin-shibboleth"
