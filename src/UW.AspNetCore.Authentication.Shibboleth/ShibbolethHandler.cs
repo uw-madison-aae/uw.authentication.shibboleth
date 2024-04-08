@@ -173,6 +173,11 @@ public class ShibbolethHandler : AuthenticationHandler<ShibbolethOptions>,
             ticketContext.ReturnUri = BuildRedirectUri("/");
         }
 
+        // if this the entire site is protected, we have already extracted the Shibboleth information
+        // however, we are saying the request "wasn't handled" so that AuthenticateAsync() will also run
+        if (!Options.UseChallenge)
+            return false;
+
         Response.Redirect(ticketContext.ReturnUri);
         return true;
     }
