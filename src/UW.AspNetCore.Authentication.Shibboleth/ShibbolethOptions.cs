@@ -68,6 +68,13 @@ namespace UW.AspNetCore.Authentication
         /// </summary>
         public bool UseChallenge { get; set; } = false;
 
+        /// <summary>
+        /// Gets or sets the name of the parameter used to convey the original location
+        /// of the user before the challenge was triggered.
+        /// </summary>
+        // Note: this deliberately matches the default parameter name used by the cookie handler.
+        public string ReturnUrlParameter { get; set; } = "ReturnUrl";
+
         public IShibbolethAttributeCollection ShibbolethAttributes { get; set; } = ShibbolethAttributeCollection.DefaultUWAttributes;
 
         /// <summary>

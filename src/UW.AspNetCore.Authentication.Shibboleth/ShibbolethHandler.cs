@@ -141,7 +141,7 @@ public class ShibbolethHandler : AuthenticationHandler<ShibbolethOptions>,
         Debug.Assert(ticket != null);
         var ticketContext = new ShibbolethTicketReceivedContext(Context, Scheme, Options, ticket)
         {
-            ReturnUri = ticket.Properties.RedirectUri
+            ReturnUri = Request.Query[Options.ReturnUrlParameter]
         };
 
         ticket.Properties.RedirectUri = null;
@@ -342,7 +342,7 @@ public class ShibbolethHandler : AuthenticationHandler<ShibbolethOptions>,
     {
         var parameters = new Dictionary<string, string>()
         {
-            { "returnUrl", redirectUri }
+            { Options.ReturnUrlParameter, redirectUri }
         };
 
         PathString authorizationEndpoint = OriginalPathBase + Options.CallbackPath;
