@@ -2,7 +2,6 @@ using System.Diagnostics;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
@@ -299,6 +298,13 @@ public class ShibbolethHandler : AuthenticationHandler<ShibbolethOptions>,
         } //end catch
     }
 
+    /// <summary>
+    /// Creates the <see cref="AuthenticationTicket"/> with the supplied identity and attributes
+    /// </summary>
+    /// <param name="identity"></param>
+    /// <param name="properties"></param>
+    /// <param name="userData"></param>
+    /// <returns></returns>
     protected virtual async Task<AuthenticationTicket> CreateTicketAsync(
         ClaimsIdentity identity, AuthenticationProperties properties, ShibbolethAttributeValueCollection userData)
     {
@@ -326,7 +332,7 @@ public class ShibbolethHandler : AuthenticationHandler<ShibbolethOptions>,
             properties.RedirectUri = OriginalPath + Request.QueryString;
         }
 
-        string authorizationEndpoint = BuildChallengeUrl(properties, BuildRedirectUri(properties.RedirectUri));
+        string authorizationEndpoint = BuildChallengeUrl(properties, properties.RedirectUri);
 
         var redirectContext = new RedirectContext<ShibbolethOptions>(
             Context, Scheme, Options,
