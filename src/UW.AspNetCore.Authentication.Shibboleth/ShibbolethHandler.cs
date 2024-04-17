@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 using UW.Shibboleth;
 
 namespace UW.AspNetCore.Authentication;
@@ -232,7 +233,13 @@ public class ShibbolethHandler : AuthenticationHandler<ShibbolethOptions>,
         var identity = new ClaimsIdentity(ClaimsIssuer);
         ShibbolethAttributeValueCollection userData = shibbolethProcessor.ExtractAttributeValues(Context);
 
-        return HandleRequestResult.Success(await CreateTicketAsync(identity, new AuthenticationProperties(), userData));
+        IQueryCollection query = Request.Query;
+
+        StringValues state = query["state"];
+        AuthenticationProperties? properties = Options.StateDataFormat.Unprotect(state);
+        properties ??= new AuthenticationProperties();
+
+        return HandleRequestResult.Success(await CreateTicketAsync(identity, properties, userData));
     }
 
     /// <summary>
@@ -355,6 +362,8 @@ public class ShibbolethHandler : AuthenticationHandler<ShibbolethOptions>,
         {
             { Options.ReturnUrlParameter, redirectUri }
         };
+
+        parameters["state"] = Options.StateDataFormat.Protect(properties);
 
         PathString authorizationEndpoint = OriginalPathBase + Options.CallbackPath;
 

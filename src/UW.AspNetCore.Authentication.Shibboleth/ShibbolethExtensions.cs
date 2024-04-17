@@ -76,25 +76,7 @@ public static class ShibbolethExtensions
         string? displayName,
         Action<ShibbolethOptions> configureOptions)
     {
-        builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IPostConfigureOptions<ShibbolethOptions>, EnsureSignInScheme>());
+        builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IPostConfigureOptions<ShibbolethOptions>, ShibbolethPostConfigureOptions>());
         return builder.AddScheme<ShibbolethOptions, ShibbolethHandler>(authenticationScheme, displayName, configureOptions);
-    }
-
-    // Used to ensure that there's always a default sign in scheme that's not itself
-    // Taken from registering RemoteAuthenticationHandler in the AuthenticationBuilder
-    // https://github.com/dotnet/aspnetcore/blob/b83e1e159ef1bdfe638e36c8b00bc65ed2d1d857/src/Security/Authentication/Core/src/AuthenticationBuilder.cs#L113
-    private class EnsureSignInScheme : IPostConfigureOptions<ShibbolethOptions>
-    {
-        private readonly AuthenticationOptions _authOptions;
-
-        public EnsureSignInScheme(IOptions<AuthenticationOptions> authOptions)
-        {
-            _authOptions = authOptions.Value;
-        }
-
-        public void PostConfigure(string? name, ShibbolethOptions options)
-        {
-            options.SignInScheme ??= _authOptions.DefaultSignInScheme ?? _authOptions.DefaultScheme;
-        }
     }
 }

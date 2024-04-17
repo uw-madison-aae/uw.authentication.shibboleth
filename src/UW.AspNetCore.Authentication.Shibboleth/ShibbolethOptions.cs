@@ -1,4 +1,6 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using UW.Shibboleth;
 
@@ -13,6 +15,12 @@ namespace UW.AspNetCore.Authentication
         {
             ClaimsIssuer = ShibbolethDefaults.Issuer;
             CallbackPath = new PathString("/signin-shibboleth");
+
+            // needed for compatiblity as an External Provider in AddDefaultIdentity
+            ClaimActions.MapCustomAttribute(ClaimTypes.NameIdentifier, "uid", value =>
+            {
+                return value.ToLower();
+            });
 
             ClaimActions.MapAttribute(UWShibbolethClaimsType.FIRSTNAME, "givenName");
             ClaimActions.MapAttribute(UWShibbolethClaimsType.LASTNAME, "sn");
@@ -89,6 +97,16 @@ namespace UW.AspNetCore.Authentication
         /// When omitted, <see cref="AuthenticationOptions.DefaultSignInScheme"/> is used as a fallback value.
         /// </summary>
         public string? SignInScheme { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type used to secure data handled by the middleware.
+        /// </summary>
+        public ISecureDataFormat<AuthenticationProperties> StateDataFormat { get; set; } = default!;
+
+        /// <summary>
+        /// Gets or sets the type used to secure data.
+        /// </summary>
+        public IDataProtectionProvider? DataProtectionProvider { get; set; }
 
         /// <summary>
         /// The object provided by the application to process events raised by the Shibboleth handler.
