@@ -337,7 +337,7 @@ public class ShibbolethHandler : AuthenticationHandler<ShibbolethOptions>,
 
         if (string.IsNullOrEmpty(properties.RedirectUri))
         {
-            properties.RedirectUri = OriginalPath + Request.QueryString;
+            properties.RedirectUri = BuildRedirectUri(OriginalPath + Request.QueryString);
         }
 
         string authorizationEndpoint = BuildChallengeUrl(properties, properties.RedirectUri);
