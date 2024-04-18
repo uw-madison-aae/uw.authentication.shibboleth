@@ -221,11 +221,8 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
                                  options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
-// use Shibboleth as the authentication scheme
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultScheme = ShibbolethDefaults.AuthenticationScheme;
-})
+// DefaultAuthentication and DefaultSignInScheme selected in the .AddDefaultIdentity
+builder.Services.AddAuthentication()
     .AddUWShibboleth(
         authenticationScheme: ShibbolethDefaults.AuthenticationScheme,
         displayName: "UW-Madison NetID",
