@@ -52,6 +52,7 @@ Headers must be forwarded from the Apache Reverse Proxy into the ASP.NET app run
 		RequestHeader set wiscEduPVI %{wiscEduPVI}e
 		RequestHeader set ShibSessionIndex %{ShibSessionIndex}e
 
+You must also add `UseForwardedHeaders` to the Program.cs/Startup.cs file.  See [Microsoft documentation](https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/proxy-load-balancer#other-proxy-server-and-load-balancer-scenarios) for more information
 # `ShibbolethOptions` Class
 *Inherits from [`AuthenticationSchemeOptions`](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.authentication.authenticationschemeoptions) - those properties are not included below*
 
